@@ -1,0 +1,85 @@
+import { motion, useReducedMotion } from 'framer-motion'
+import { WordsPullUpMultiStyle } from './WordsPullUpMultiStyle'
+import { MaskReveal } from './MaskReveal'
+import { RotatingWord } from './RotatingWord'
+import { BookACall } from './BookACall'
+import { ImageReveal } from './ImageReveal'
+import { Grid } from './Grid'
+import { Eyebrow } from './Eyebrow'
+
+const EASE_IN = [0.16, 1, 0.3, 1] as const
+
+const FEATHER_X = 'linear-gradient(to right, black 0%, black 92%, transparent 100%)'
+const FEATHER_Y =
+  'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)'
+
+const maskStyle = (image: string) =>
+  ({ maskImage: image, WebkitMaskImage: image }) as const
+
+const ROTATING = ['launch it.', 'build it.', 'fund it.']
+
+export function About() {
+  const reduceMotion = useReducedMotion()
+
+  const fadeUp = (delay: number) =>
+    reduceMotion
+      ? {}
+      : {
+          initial: { y: 20, opacity: 0 },
+          whileInView: { y: 0, opacity: 1 },
+          viewport: { once: true, margin: '-80px' },
+          transition: { duration: 0.7, delay, ease: EASE_IN },
+        }
+
+  return (
+    <section id="about" className="relative overflow-hidden bg-paper py-20 md:py-28">
+      <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
+
+      <Grid className="relative items-center gap-y-12">
+        {/* Full-bleed portrait: deliberately escapes the grid to the left edge. */}
+        <div className="col-span-4 md:col-span-8 lg:col-span-5">
+          <ImageReveal className="-ml-6 md:-ml-10 lg:-ml-16">
+            <div style={maskStyle(FEATHER_Y)}>
+              <div className="relative" style={maskStyle(FEATHER_X)}>
+                <img
+                  src="/portrait.jpg"
+                  alt="Abdullah Abou Selmi"
+                  className="h-[55vh] w-full object-cover object-center lg:h-[72vh]"
+                  onError={(event) => {
+                    event.currentTarget.style.visibility = 'hidden'
+                  }}
+                />
+                <div
+                  aria-hidden="true"
+                  className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]"
+                />
+              </div>
+            </div>
+          </ImageReveal>
+        </div>
+
+        <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
+          <Eyebrow tone="light">Product &amp; Brand Strategist</Eyebrow>
+
+          <h2 className="display-1 mt-6 max-w-[14ch] text-ink">
+            <WordsPullUpMultiStyle
+              align="left"
+              segments={[{ text: 'See it before you' }]}
+            />
+            <RotatingWord words={ROTATING} className="font-serif italic" />
+          </h2>
+
+          <MaskReveal as="p" order={1} className="body-lg mt-8 max-w-[46ch] text-ink/70">
+            I make strategy tangible. Research, consumer understanding and
+            commercial thinking, formulated into opportunities you can actually
+            see before you build them.
+          </MaskReveal>
+
+          <motion.div {...fadeUp(0.5)} className="mt-10">
+            <BookACall variant="ink" />
+          </motion.div>
+        </div>
+      </Grid>
+    </section>
+  )
+}

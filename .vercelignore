@@ -1,0 +1,5 @@
+# Vercel builds from source; the local build output is not needed and would
+# otherwise double the upload (public/ assets are copied into dist/).
+dist
+node_modules
+.vite

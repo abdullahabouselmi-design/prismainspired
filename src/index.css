@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  background-color: #0b0907;
+}
+
+body {
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-weight: 300;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@layer components {
+  /* The type scale. Nothing on the site sits outside these six steps. */
+  /* Tight display tracking closes up the space glyph as well as the letters,
+     so the word gap is given back explicitly. Letter tracking is unchanged. */
+  .display-hero {
+    @apply font-display text-[14vw] font-bold leading-[0.82] tracking-[-0.05em];
+    word-spacing: 0.08em;
+  }
+  .display-1 {
+    @apply font-display text-[7vw] font-semibold leading-[0.85] tracking-[-0.05em] md:text-[8vw];
+    word-spacing: 0.09em;
+  }
+  .display-2 {
+    @apply font-display text-3xl font-medium leading-[0.95] tracking-[-0.03em] md:text-5xl;
+    word-spacing: 0.04em;
+  }
+  .body-lg {
+    @apply font-sans text-lg font-light leading-[1.5] md:text-xl;
+  }
+  .body-base {
+    @apply font-sans text-base font-light leading-[1.6];
+  }
+  .label {
+    @apply font-sans text-[10px] font-bold uppercase tracking-[0.18em];
+  }
+}
+
+@layer utilities {
+  /* Fractal-noise grain, inlined as an SVG data URI so it costs no request. */
+  .noise-overlay,
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Full-bleed escape from the grid container. */
+  .full-bleed {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .marquee-track {
+    animation: marquee-scroll 38s linear infinite;
+  }
+
+  .marquee-host:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+}
+
+@layer base {
+  :target,
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
+  a,
+  button {
+    transition:
+      transform 0.3s ease-out,
+      opacity 0.3s ease-out,
+      color 0.3s ease-out,
+      gap 0.3s ease-out;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid #2a3b47;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .has-custom-cursor,
+  .has-custom-cursor a,
+  .has-custom-cursor button,
+  .has-custom-cursor [role='button'] {
+    cursor: none;
+  }
+
+  /* SplitText line masks. */
+  .split-line-mask {
+    overflow: hidden;
+    display: block;
+  }
+}
