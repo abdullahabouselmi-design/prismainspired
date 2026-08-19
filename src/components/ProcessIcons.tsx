@@ -1,24 +1,5 @@
-import { motion, type Variants } from 'framer-motion'
-
-const EASE = [0.22, 1, 0.36, 1] as const
-
 // Stroked elements draw themselves in; filled ones cannot, so they fade.
-export const drawVariants: Variants = {
-  hidden: { pathLength: 0, opacity: 0 },
-  visible: {
-    pathLength: 1,
-    opacity: 1,
-    transition: {
-      pathLength: { duration: 0.8, delay: 0.2, ease: EASE },
-      opacity: { duration: 0.15, delay: 0.2 },
-    },
-  },
-}
-
-export const fillVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.5, delay: 0.45 } },
-}
+// The parent step owns the timeline and finds these by attribute.
 
 type IconProps = { className?: string; accentClassName?: string }
 
@@ -35,14 +16,14 @@ const svg = {
 export function IconLook({ className, accentClassName }: IconProps) {
   return (
     <svg {...svg} className={className} aria-hidden="true">
-      <motion.path variants={drawVariants} d="M6 40h36" />
-      <motion.path variants={drawVariants} d="M11 40V30" />
-      <motion.path variants={drawVariants} d="M18.5 40V22.5" />
-      <motion.path variants={drawVariants} d="M26 40V14" />
-      <motion.path variants={drawVariants} d="M33.5 40V26" />
-      <motion.path variants={drawVariants} d="M41 40V33" />
-      <motion.circle
-        variants={fillVariants}
+      <path data-draw="" d="M6 40h36" />
+      <path data-draw="" d="M11 40V30" />
+      <path data-draw="" d="M18.5 40V22.5" />
+      <path data-draw="" d="M26 40V14" />
+      <path data-draw="" d="M33.5 40V26" />
+      <path data-draw="" d="M41 40V33" />
+      <circle
+        data-fade=""
         className={accentClassName}
         cx="26"
         cy="8.5"
@@ -61,14 +42,14 @@ export function IconShape({ className, accentClassName }: IconProps) {
   ]
   return (
     <svg {...svg} className={className} aria-hidden="true">
-      <motion.path
-        variants={drawVariants}
+      <path
+        data-draw=""
         d="M18 8h12v8l5 7v17H13V23l5-7V8Z"
       />
       {nodes.map(([cx, cy], i) => (
-        <motion.circle
+        <circle
           key={`${cx}-${cy}`}
-          variants={fillVariants}
+          data-fade=""
           className={i === 3 ? accentClassName : undefined}
           cx={cx}
           cy={cy}
@@ -87,9 +68,9 @@ export function IconLocate({ className, accentClassName }: IconProps) {
   return (
     <svg {...svg} className={className} aria-hidden="true">
       {xs.map((x, i) => (
-        <motion.rect
+        <rect
           key={x}
-          variants={drawVariants}
+          data-draw=""
           className={i === 1 ? accentClassName : undefined}
           x={x}
           y="15"
@@ -99,7 +80,7 @@ export function IconLocate({ className, accentClassName }: IconProps) {
           strokeWidth={i === 1 ? 2.25 : 1.5}
         />
       ))}
-      <motion.path variants={drawVariants} d="M4 40h40" />
+      <path data-draw="" d="M4 40h40" />
     </svg>
   )
 }
@@ -108,15 +89,15 @@ export function IconLocate({ className, accentClassName }: IconProps) {
 export function IconShow({ className, accentClassName }: IconProps) {
   return (
     <svg {...svg} className={className} aria-hidden="true">
-      <motion.path
-        variants={fillVariants}
+      <path
+        data-fade=""
         d="M19 18h10v5l5 6.5V40H14V29.5L19 23V18Z"
         fill="currentColor"
         stroke="none"
       />
-      <motion.path variants={drawVariants} className={accentClassName} d="M24 12V6" />
-      <motion.path variants={drawVariants} className={accentClassName} d="M16 14 12.5 9.5" />
-      <motion.path variants={drawVariants} className={accentClassName} d="M32 14 35.5 9.5" />
+      <path data-draw="" className={accentClassName} d="M24 12V6" />
+      <path data-draw="" className={accentClassName} d="M16 14 12.5 9.5" />
+      <path data-draw="" className={accentClassName} d="M32 14 35.5 9.5" />
     </svg>
   )
 }

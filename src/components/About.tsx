@@ -1,13 +1,11 @@
-import { motion, useReducedMotion } from 'framer-motion'
 import { WordsPullUpMultiStyle } from './WordsPullUpMultiStyle'
 import { MaskReveal } from './MaskReveal'
 import { RotatingWord } from './RotatingWord'
 import { BookACall } from './BookACall'
 import { ImageReveal } from './ImageReveal'
+import { FadeUp } from './FadeUp'
 import { Grid } from './Grid'
 import { Eyebrow } from './Eyebrow'
-
-const EASE_IN = [0.16, 1, 0.3, 1] as const
 
 const FEATHER_X = 'linear-gradient(to right, black 0%, black 92%, transparent 100%)'
 const FEATHER_Y =
@@ -19,18 +17,6 @@ const maskStyle = (image: string) =>
 const ROTATING = ['launch it.', 'build it.', 'fund it.']
 
 export function About() {
-  const reduceMotion = useReducedMotion()
-
-  const fadeUp = (delay: number) =>
-    reduceMotion
-      ? {}
-      : {
-          initial: { y: 20, opacity: 0 },
-          whileInView: { y: 0, opacity: 1 },
-          viewport: { once: true, margin: '-80px' },
-          transition: { duration: 0.7, delay, ease: EASE_IN },
-        }
-
   return (
     <section id="about" className="relative overflow-hidden bg-paper py-20 md:py-28">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
@@ -42,8 +28,12 @@ export function About() {
             <div style={maskStyle(FEATHER_Y)}>
               <div className="relative" style={maskStyle(FEATHER_X)}>
                 <img
-                  src="/portrait.jpg"
+                  src="/portrait.webp"
                   alt="Abdullah Abou Selmi"
+                  width={2600}
+                  height={3482}
+                  loading="lazy"
+                  decoding="async"
                   className="h-[55vh] w-full object-cover object-center lg:h-[72vh]"
                   onError={(event) => {
                     event.currentTarget.style.visibility = 'hidden'
@@ -75,9 +65,9 @@ export function About() {
             see before you build them.
           </MaskReveal>
 
-          <motion.div {...fadeUp(0.5)} className="mt-10">
+          <FadeUp delay={0.5} className="mt-10">
             <BookACall variant="ink" />
-          </motion.div>
+          </FadeUp>
         </div>
       </Grid>
     </section>

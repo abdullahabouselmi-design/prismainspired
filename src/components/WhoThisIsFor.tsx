@@ -1,4 +1,4 @@
-import { useReducedMotion } from 'framer-motion'
+import { useReducedMotion } from '../lib/motion'
 import { WordsPullUpMultiStyle } from './WordsPullUpMultiStyle'
 import { MaskReveal } from './MaskReveal'
 import { Grid } from './Grid'

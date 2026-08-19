@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import Lenis from 'lenis'
 import { gsap, ScrollTrigger, prefersReducedMotion } from './gsap'
+import { requestScrollRefresh } from './motion'
 
 /**
  * Lenis on the window, kept in lockstep with ScrollTrigger.
@@ -41,7 +42,7 @@ export function useSmoothScroll() {
     }
     document.addEventListener('click', onClick)
 
-    ScrollTrigger.refresh()
+    requestScrollRefresh()
 
     return () => {
       document.removeEventListener('click', onClick)

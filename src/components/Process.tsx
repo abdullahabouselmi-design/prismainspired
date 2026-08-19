@@ -1,11 +1,10 @@
-import { useRef, type ComponentType } from 'react'
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef, type ComponentType } from 'react'
+import { gsap, prefersReducedMotion, EASE_IN, EASE_DRAW } from '../lib/gsap'
+import { clearReveal, revealAttr } from '../lib/motion'
 import { WordsPullUpMultiStyle } from './WordsPullUpMultiStyle'
 import { Grid } from './Grid'
 import { Eyebrow } from './Eyebrow'
 import { IconLook, IconShape, IconLocate, IconShow } from './ProcessIcons'
-
-const EASE = [0.16, 1, 0.3, 1] as const
 
 type Step = {
   number: string
@@ -48,39 +47,60 @@ const STEPS: Step[] = [
 
 function ProcessStep({ step, index }: { step: Step; index: number }) {
   const ref = useRef<HTMLLIElement>(null)
-  const isInView = useInView(ref, { once: true, margin: '-80px' })
-  const reduceMotion = useReducedMotion()
-  const active = reduceMotion ? true : isInView
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    if (prefersReducedMotion()) {
+      clearReveal(el)
+      return
+    }
+
+    const ctx = gsap.context(() => {
+      gsap.set(el, { y: 20, opacity: 0 })
+      clearReveal(el)
+
+      // Stroked icon parts draw themselves; filled parts cannot, so they fade.
+      const strokes = gsap.utils.toArray<SVGGeometryElement>('[data-draw]', el)
+      const fills = gsap.utils.toArray<SVGElement>('[data-fade]', el)
+
+      strokes.forEach((node) => {
+        const length = typeof node.getTotalLength === 'function' ? node.getTotalLength() : 0
+        if (length) gsap.set(node, { strokeDasharray: length, strokeDashoffset: length })
+      })
+      gsap.set([...strokes, ...fills], { opacity: 0 })
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: el, start: 'top bottom-=80px', once: true },
+      })
+
+      tl.to(el, { y: 0, opacity: 1, duration: 0.7, delay: index * 0.12, ease: EASE_IN })
+        .to(strokes, { opacity: 1, duration: 0.15 }, '<0.2')
+        .to(strokes, { strokeDashoffset: 0, duration: 0.8, ease: EASE_DRAW }, '<')
+        .to(fills, { opacity: 1, duration: 0.5 }, '<0.25')
+    }, el)
+
+    return () => ctx.revert()
+  }, [index])
 
   // A single slate hairline to the left of columns two, three and four.
   const divider = index > 0 ? 'lg:border-l lg:border-slate/25 lg:pl-8' : ''
 
   return (
-    <motion.li
-      ref={ref}
-      className={divider}
-      initial={reduceMotion ? false : { y: 20, opacity: 0 }}
-      animate={active ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-      transition={
-        reduceMotion ? { duration: 0 } : { duration: 0.7, delay: index * 0.12, ease: EASE }
-      }
-    >
+    <li ref={ref} className={divider} {...revealAttr()}>
       <div className="flex items-baseline gap-3">
         <span className="label text-amberDeep">{step.number}</span>
         <span className="label text-ink/50">{step.label}</span>
       </div>
 
-      <motion.span
-        className="mt-6 block"
-        initial={reduceMotion ? false : 'hidden'}
-        animate={active ? 'visible' : 'hidden'}
-      >
+      <span className="mt-6 block">
         <step.Icon className="h-12 w-12 text-ink" accentClassName="text-amberDeep" />
-      </motion.span>
+      </span>
 
       <h3 className="display-2 mt-6 text-ink">{step.title}</h3>
       <p className="body-base mt-4 text-ink/60">{step.body}</p>
-    </motion.li>
+    </li>
   )
 }
 

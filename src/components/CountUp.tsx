@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/gsap'
+import { gsap, prefersReducedMotion } from '../lib/gsap'
+import { requestScrollRefresh } from '../lib/motion'
 
 type CountUpProps = {
   value: string
@@ -35,7 +36,7 @@ export function CountUp({ value, className }: CountUpProps) {
       })
     }, el)
 
-    ScrollTrigger.refresh()
+    requestScrollRefresh()
     return () => ctx.revert()
   }, [target])
 

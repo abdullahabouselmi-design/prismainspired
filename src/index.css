@@ -5,6 +5,30 @@
 html {
   scroll-behavior: smooth;
   background-color: #0b0907;
+  /* Matches the Grid container's horizontal padding at each breakpoint. */
+  --bleed: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  html { --bleed: 2.5rem; }
+}
+
+@media (min-width: 1024px) {
+  html { --bleed: 4rem; }
+}
+
+/* Reveal components render hidden so they never paint in the wrong position
+   for a frame. GSAP sets its from-state, then clears the attribute. The
+   attribute is only ever applied when motion is enabled. */
+[data-reveal='pending'] {
+  visibility: hidden;
+}
+
+/* Belt and braces: if scripting never runs, content must still appear. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    visibility: visible !important;
+  }
 }
 
 body {
@@ -52,11 +76,12 @@ body {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  /* Full-bleed escape from the grid container. */
+  /* Full-bleed escape from the grid container. 100vw includes the desktop
+     scrollbar and overflows; margin-inset off the padded container instead,
+     which is scrollbar-agnostic and needs no transform of its own. */
   .full-bleed {
-    width: 100vw;
-    margin-left: 50%;
-    transform: translateX(-50%);
+    width: auto;
+    margin-inline: calc(var(--bleed) * -1);
   }
 
   @keyframes marquee-scroll {
@@ -85,12 +110,15 @@ body {
     scroll-margin-top: 5rem;
   }
 
+  /* GSAP must own `transform` uncontested: a blanket CSS transition on it
+     re-animates every tween GSAP writes. Colour, opacity and the CTA's gap
+     stay on CSS, which is where the hover behaviour actually lives. */
   a,
   button {
     transition:
-      transform 0.3s ease-out,
       opacity 0.3s ease-out,
       color 0.3s ease-out,
+      background-color 0.3s ease-out,
       gap 0.3s ease-out;
   }
 

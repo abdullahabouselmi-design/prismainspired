@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/gsap'
+import { requestScrollRefresh } from '../lib/motion'
 
 const COLOURS = { ink: '#0B0907', paper: '#EAE2D4' } as const
 
@@ -41,7 +42,7 @@ export function PageBackground() {
       })
     })
 
-    ScrollTrigger.refresh()
+    requestScrollRefresh()
     return () => ctx.revert()
   }, [])
 

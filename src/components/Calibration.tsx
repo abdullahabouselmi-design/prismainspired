@@ -5,6 +5,7 @@ import { Grid } from './Grid'
 import { Eyebrow } from './Eyebrow'
 import { CanFallback } from './CanFallback'
 import { gsap, ScrollTrigger, prefersReducedMotion } from '../lib/gsap'
+import { requestScrollRefresh } from '../lib/motion'
 import type { ProgressRef } from './CanScene'
 
 const CanScene = lazy(() => import('./CanScene'))
@@ -105,7 +106,7 @@ export function Calibration() {
       return () => st.kill()
     })
 
-    ScrollTrigger.refresh()
+    requestScrollRefresh()
     return () => mm.revert()
   }, [])
 
