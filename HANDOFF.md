@@ -40,7 +40,7 @@ from measurement. Two artefacts made that reliable and are worth reusing:
 | Eyebrow 12px/400/1.2px uppercase, no square | identical |
 | Horizontal overflow at 1440/1024/768/375 | none |
 | `reducedMotion: 'reduce'` | no Three.js request, no hidden text, no stranded `data-reveal` |
-| Total document height | 10,699 vs production 12,344 — see below; the gap is now the redesigned How I think section |
+| Total document height | 10,307 vs production 12,344 — the gap is the redesigned How I think section |
 
 `npx tsc -b --noEmit` and `npm run build` are clean.
 
@@ -58,7 +58,7 @@ its Phase 0 component architecture by instruction:
 | Manifesto | −84 | production centres the copy in a `rounded-2xl bg-panel` card; repo uses a left-aligned grid |
 | The Gap | +89 | repo adds the GapDivergence layer and splits the copy differently |
 | Services | +104 | production has an intro paragraph the repo does not, and a different card grid |
-| Calibration | −1,847 | **deliberate.** The 3D can was cut and the section rebuilt around the shelf; it no longer pins for 320% of the viewport |
+| Calibration | −2,131 | **deliberate.** The 3D can was cut and the section rebuilt; it no longer pins for 320% of the viewport |
 | Work / Who / Contact | +88 / +96 / −95 | markup structure |
 
 Three items were left alone deliberately — each needs a decision, not a fix:
@@ -110,43 +110,65 @@ their own ladders.
 (no max-width, About only). Gutters are 24px at every breakpoint, which
 `--bleed` mirrors for `.full-bleed`.
 
-## How I think — the shelf
+## How I think — the can
 
-The 3D can is gone. `CanScene.tsx` and `CanFallback.tsx` are deleted, and with
-them the 814KB lazy chunk; the section is now `ShelfCalibration.tsx`, hand-drawn
-SVG driven by GSAP.
+The 3D can is gone and so is the shelf sequence that briefly replaced it.
+`CanScene.tsx`, `CanFallback.tsx` and `ShelfCalibration.tsx` are all deleted.
+The section is now `CalibrationCan.tsx`: hand-drawn SVG, one mechanic.
 
-**The concept.** Nine pack outlines on a rail. Nothing is chosen at the start —
-all nine at equal weight, no annotation. Each row then performs one *relation*,
-never a measurement: rulers and dimension lines were rejected deliberately
-because they read as packaging design rather than strategy.
+**Why the shelf was cut.** It ran seven different mechanics — bracket, off-shelf
+leader, re-sort, veil, narrowing rail, lift — so nothing accumulated and it read
+as seven tricks. It also anchored on *"where it sits against everything beside
+it"*, one row of seven, when the copy's thesis is its first line: *a product
+isn't one big idea, it's dozens of small decisions.*
 
-| Beat | What the shelf does |
+**The concept.** Open on five facings on a rail, all equal, nothing chosen. The
+other four fade, the rail clears, and from the empty frame a single can **draws
+itself, one part per row**. Nothing ever leaves; every beat adds. At Result the
+label band turns amber and a ground line returns beneath it.
+
+| Beat | Part drawn |
 |---|---|
-| 01 Audience | a bracket groups the set that was ever in play; the rest drop to 0.15 |
-| 02 Product | ours resolves to full weight and gains its cap detail |
-| 03 Positioning | a dashed outline appears **off** the shelf, joined by an amber-deep leader — the habit isn't on this shelf |
-| 04 Price | the shelf re-sorts along the rail; ours holds slot 4 and everything moves around it |
-| 05 Message | an ink veil erases everything below the top third — the first three seconds |
-| 06 Channel | the rail scales to 0.58 and the outlying facings drop; the stage recentres on ours |
-| 07 Result | ours turns amber, lifts off the rail, is restocked, lifts again, and **ends present** |
+| 01 Audience | the shelf resolves to one, then the base curve |
+| 02 Product | the body sides |
+| 03 Positioning | the neck |
+| 04 Price | the rolled rim |
+| 05 Message | the lid, rivet and tab |
+| 06 Channel | the label band |
+| 07 Result | band turns amber, ground line returns |
+
+The parts are deliberately **unlabelled**. The drawing accumulates as the
+thinking accumulates; claiming "Audience *is* the base" would be a false
+mapping.
+
+**Drawing the can.** Depth is perspective alone — every horizontal shares one
+viewing angle (minor/major 0.24), the base shows only its front curve because
+the back is behind the body, and the neck is a short concave taper. Real 355ml
+proportions: 1.9:1, necking in only over the top ~10%. An earlier pass used long
+straight tapers top and bottom and read as an octagon.
 
 **Mechanics.** One timeline pinned to duration 1 (the `GapDivergence` idiom),
-scrubbed by a ScrollTrigger on the rows container at `top 50%` / `bottom 72%`.
-Beat *k* fires at `k/7 + 0.015` and runs for 0.085. The lit row is read from
-`tl.progress()`, **not** from the trigger's progress, so the copy and the shelf
-can never be a beat apart while the scrub catches up — verified sample by
-sample. Below `md` the viewBox crops to the middle five facings.
+scrubbed by a ScrollTrigger on the rows container at `top 20%` / `bottom 55%`.
+Beat *k* fires at `k/7 + 0.015`. The lit row is read from `tl.progress()`, not
+the trigger's, so copy and drawing cannot drift apart. Layout is two columns
+with the can `position: sticky` in the left one — no pin, no spacer.
 
-**Two traps, both hit during the build.** Placement must live on an outer `<g>`:
-writing GSAP `x`/`y` onto a group that already carries a `transform="translate()"`
-attribute *replaces* the placement and collapses every facing onto one spot.
-And the sticky shelf shares a wrapper with the rows — sticky is bounded by its
-parent, so without the wrapper it lingers over the section's bottom padding
-after the last row has gone.
+**Three traps, all hit while building this.**
 
-**Known nit:** on mobile the active row's label can sit behind the sticky shelf
-as it scrolls through. Transient, but worth a look if the section gets revisited.
+1. **`vector-effect: non-scaling-stroke` breaks stroke-dashoffset drawing.** The
+   browser measures the dash array in screen units while `getTotalLength()`
+   returns user units, so at any SVG scale other than 1 the gap stops covering
+   the path and undrawn segments leak fragments. It is removed here. Note
+   `GapDivergence.tsx` still uses it — it gets away with it only because its
+   viewBox renders at roughly 1:1.
+2. **A round line-cap paints a dot on a zero-length dash**, which is exactly
+   what an undrawn segment is. Caps are `butt`, the gap is `2 * len` (a tight
+   margin lets the tail wrap back in, since `getTotalLength()` under-reports
+   curves), and each part's group is held at `opacity: 0` until its beat.
+3. **Below `lg` the can and the rows share a column**, so the sticky can needs
+   its own `bg-ink` and its own noise overlay for rows to pass behind it, and it
+   must pin to `top-0` or rows reappear above it. The wrapper uses `contents
+   lg:block` so the sticky element gets a tall containing block at every width.
 
 ## The Gap animation
 

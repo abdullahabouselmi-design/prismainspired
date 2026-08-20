@@ -3,7 +3,7 @@ import { WordsPullUpMultiStyle } from './WordsPullUpMultiStyle'
 import { MaskReveal } from './MaskReveal'
 import { Grid } from './Grid'
 import { Eyebrow } from './Eyebrow'
-import { ShelfCalibration } from './ShelfCalibration'
+import { CalibrationCan } from './CalibrationCan'
 import { prefersReducedMotion } from '../lib/gsap'
 
 const BLOCKS = [
@@ -50,57 +50,62 @@ export function Calibration() {
         </MaskReveal>
       </Grid>
 
-      {/* The shelf is the stage: it holds while the rows pass beneath it.
-          Sticky is bounded by its own parent, so the shelf and the rows share
-          one wrapper — otherwise the shelf would linger over the section's
-          bottom padding after the last row had gone. */}
-      <div className="relative">
-      <div className="sticky top-0 z-10 mt-16 bg-ink pb-6 pt-8">
-        <Grid width="lg" className="relative">
-          <div className="col-span-4 h-[30vh] md:col-span-8 md:h-[36vh] lg:col-span-12 lg:h-[42vh]">
-            <ShelfCalibration triggerRef={rowsRef} onBeat={onBeat} />
-          </div>
-        </Grid>
-      </div>
-
-      <Grid width="lg" className="relative">
+      {/* The can holds while the rows scroll beside it. `contents` below lg
+          hands the sticky element the tall wrapper it needs to travel in; at lg
+          the wrapper becomes the left grid column, which stretches to the row's
+          full height and does the same job. */}
+      <Grid width="lg" className="relative mt-14">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
-          <div className="flex items-baseline justify-between border-b border-bone/15 pb-3">
-            <span className="text-xs uppercase tracking-widest text-bone">The calibration</span>
-            <span className="text-xs text-bone/40">Set to a proportion</span>
-          </div>
+          <div className="lg:grid lg:grid-cols-12 lg:gap-16">
+            <div className="contents lg:block lg:col-span-5">
+              {/* Below lg the can and the rows share one column, so the can
+                  needs its own ground for the rows to pass behind — and it
+                  pins to the very top, or rows would reappear above it. At lg
+                  it sits in its own column and needs neither. */}
+              <div className="sticky top-0 z-10 mb-10 flex h-[30vh] items-center justify-center bg-ink md:h-[34vh] lg:top-[14vh] lg:mb-0 lg:h-[52vh] lg:bg-transparent">
+                <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.15] lg:hidden" />
+                <CalibrationCan triggerRef={rowsRef} onBeat={onBeat} />
+              </div>
+            </div>
 
-          <div ref={rowsRef}>
-            <ul>
-              {BLOCKS.map((block, i) => {
-                const isResult = i === BLOCKS.length - 1
-                const isActive = reduced || i === activeIndex
-                return (
-                  <li
-                    key={block.label}
-                    className={`transition-opacity duration-500 ${isResult ? 'py-16' : 'border-b border-bone/10 py-16'}`}
-                    style={{ opacity: isActive ? 1 : 0.25 }}
-                  >
-                    <p className={`label ${isResult ? 'text-bone' : 'text-amber'}`}>
-                      {block.label}
-                    </p>
-                    <p
-                      className={
-                        isResult
-                          ? 'body-lg mt-3 max-w-[52ch] font-medium text-bone'
-                          : 'body-base mt-3 max-w-[52ch] text-bone'
-                      }
-                    >
-                      {block.description}
-                    </p>
-                  </li>
-                )
-              })}
-            </ul>
+            <div className="pb-[18vh] lg:col-span-7">
+              <div className="flex items-baseline justify-between border-b border-bone/15 pb-3">
+                <span className="text-xs uppercase tracking-widest text-bone">The calibration</span>
+                <span className="text-xs text-bone/40">Set to a proportion</span>
+              </div>
+
+              <div ref={rowsRef}>
+                <ul>
+                  {BLOCKS.map((block, i) => {
+                    const isResult = i === BLOCKS.length - 1
+                    const isActive = reduced || i === activeIndex
+                    return (
+                      <li
+                        key={block.label}
+                        className={`transition-opacity duration-500 ${isResult ? 'py-14' : 'border-b border-bone/10 py-14'}`}
+                        style={{ opacity: isActive ? 1 : 0.25 }}
+                      >
+                        <p className={`label ${isResult ? 'text-bone' : 'text-amber'}`}>
+                          {block.label}
+                        </p>
+                        <p
+                          className={
+                            isResult
+                              ? 'body-lg mt-3 max-w-[46ch] font-medium text-bone'
+                              : 'body-base mt-3 max-w-[46ch] text-bone'
+                          }
+                        >
+                          {block.description}
+                        </p>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </Grid>
-      </div>
     </section>
   )
 }
