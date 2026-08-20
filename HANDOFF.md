@@ -40,7 +40,7 @@ from measurement. Two artefacts made that reliable and are worth reusing:
 | Eyebrow 12px/400/1.2px uppercase, no square | identical |
 | Horizontal overflow at 1440/1024/768/375 | none |
 | `reducedMotion: 'reduce'` | no Three.js request, no hidden text, no stranded `data-reveal` |
-| Total document height | 12,434 vs production 12,344 (**+90**) |
+| Total document height | 10,699 vs production 12,344 — see below; the gap is now the redesigned How I think section |
 
 `npx tsc -b --noEmit` and `npm run build` are clean.
 
@@ -58,7 +58,7 @@ its Phase 0 component architecture by instruction:
 | Manifesto | −84 | production centres the copy in a `rounded-2xl bg-panel` card; repo uses a left-aligned grid |
 | The Gap | +89 | repo adds the GapDivergence layer and splits the copy differently |
 | Services | +104 | production has an intro paragraph the repo does not, and a different card grid |
-| Calibration | −112 | pin distance is `+=320%` vs production's 2304px (`+=256%`), and the can is `68vh` vs production's `80vh` |
+| Calibration | −1,847 | **deliberate.** The 3D can was cut and the section rebuilt around the shelf; it no longer pins for 320% of the viewport |
 | Work / Who / Contact | +88 / +96 / −95 | markup structure |
 
 Three items were left alone deliberately — each needs a decision, not a fix:
@@ -69,8 +69,9 @@ Three items were left alone deliberately — each needs a decision, not a fix:
    is frozen, so it was not touched. Everything else in Hero matches
    production exactly: section box, scroll-button box, and the `h1` at
    79.2px/800, leading 68.112px, tracking −2.376px, glyph width 427.7px.
-2. **Calibration pin geometry** (above) — `CanScene`/`Calibration` behaviour is
-   on the do-not-touch list.
+2. ~~Calibration pin geometry~~ — resolved. The pin is gone entirely; the
+   shelf is `position: sticky` and the rows scroll beneath it, so there is no
+   pin spacer and no `+=320%` to reconcile against production.
 3. **About portrait width.** Production's image column is `45vw` (648px); the
    repo's 12-column grid gives 590px. Both bleed to `x: 0`. Matching exactly
    means replacing About's grid with production's `lg:grid-cols-[45vw_1fr]`.
@@ -109,6 +110,44 @@ their own ladders.
 (no max-width, About only). Gutters are 24px at every breakpoint, which
 `--bleed` mirrors for `.full-bleed`.
 
+## How I think — the shelf
+
+The 3D can is gone. `CanScene.tsx` and `CanFallback.tsx` are deleted, and with
+them the 814KB lazy chunk; the section is now `ShelfCalibration.tsx`, hand-drawn
+SVG driven by GSAP.
+
+**The concept.** Nine pack outlines on a rail. Nothing is chosen at the start —
+all nine at equal weight, no annotation. Each row then performs one *relation*,
+never a measurement: rulers and dimension lines were rejected deliberately
+because they read as packaging design rather than strategy.
+
+| Beat | What the shelf does |
+|---|---|
+| 01 Audience | a bracket groups the set that was ever in play; the rest drop to 0.15 |
+| 02 Product | ours resolves to full weight and gains its cap detail |
+| 03 Positioning | a dashed outline appears **off** the shelf, joined by an amber-deep leader — the habit isn't on this shelf |
+| 04 Price | the shelf re-sorts along the rail; ours holds slot 4 and everything moves around it |
+| 05 Message | an ink veil erases everything below the top third — the first three seconds |
+| 06 Channel | the rail scales to 0.58 and the outlying facings drop; the stage recentres on ours |
+| 07 Result | ours turns amber, lifts off the rail, is restocked, lifts again, and **ends present** |
+
+**Mechanics.** One timeline pinned to duration 1 (the `GapDivergence` idiom),
+scrubbed by a ScrollTrigger on the rows container at `top 50%` / `bottom 72%`.
+Beat *k* fires at `k/7 + 0.015` and runs for 0.085. The lit row is read from
+`tl.progress()`, **not** from the trigger's progress, so the copy and the shelf
+can never be a beat apart while the scrub catches up — verified sample by
+sample. Below `md` the viewBox crops to the middle five facings.
+
+**Two traps, both hit during the build.** Placement must live on an outer `<g>`:
+writing GSAP `x`/`y` onto a group that already carries a `transform="translate()"`
+attribute *replaces* the placement and collapses every facing onto one spot.
+And the sticky shelf shares a wrapper with the rows — sticky is bounded by its
+parent, so without the wrapper it lingers over the section's bottom padding
+after the last row has gone.
+
+**Known nit:** on mobile the active row's label can sit behind the sticky shelf
+as it scrolls through. Transient, but worth a look if the section gets revisited.
+
 ## The Gap animation
 
 `GapDivergence.tsx`'s `STAGES` were re-measured after the restoration — the
@@ -140,4 +179,8 @@ so wheel the whole remaining delta once and wait ~700ms rather than nudging.
 - Preview deployments are SSO-gated; only the production alias is public.
 - Placeholder copy still marked `// TODO:` in Services, Process, Work,
   Who I work with, and Contact (email + LinkedIn).
-- Nothing has been deployed. The restoration is committed but not shipped.
+- Nothing has been deployed. The restoration and the shelf are committed but
+  not shipped.
+- `ProcessIcons.tsx`'s `IconLocate` has no `data-fade` element, so
+  `Process.tsx:81` tweens an empty array and GSAP logs one "target not found"
+  warning per load. Cosmetic, pre-existing, unfixed.
