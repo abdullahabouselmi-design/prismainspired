@@ -35,8 +35,9 @@ Shared infrastructure lives in `src/lib/motion.ts` — font gating, one debounce
 `ScrollTrigger.refresh()`, one resize bus, reveal gating. **Use it.** Do not add
 per-component resize listeners or extra `refresh()` calls.
 
-3D: React Three Fiber 8 + drei 9 + three 0.169, pinned to the v8 line because
-R3F 9 requires React 19. Lazy-loaded, gated on reduced-motion and a WebGL probe.
+No 3D. React Three Fiber, drei and three were removed with the Calibration
+can; every visual is now SVG driven by GSAP. Reintroducing them means a ~814KB
+chunk, so don't, without a reason that earns it.
 
 ## Rules that keep motion reliable
 
