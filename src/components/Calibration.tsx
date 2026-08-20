@@ -113,10 +113,10 @@ export function Calibration() {
   const reduced = typeof window !== 'undefined' && prefersReducedMotion()
 
   return (
-    <section ref={sectionRef} className="relative bg-ink py-40 md:py-56">
+    <section ref={sectionRef} className="relative bg-ink py-28 md:py-40">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.15]" />
 
-      <Grid className="relative gap-y-8">
+      <Grid width="lg" className="relative gap-y-8">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow>How I think</Eyebrow>
         </div>
@@ -128,7 +128,7 @@ export function Calibration() {
           />
         </h2>
 
-        <MaskReveal as="p" order={1} className="body-lg col-span-4 max-w-[58ch] text-bone/60 md:col-span-8 lg:col-span-7">
+        <MaskReveal as="p" order={1} className="body-base col-span-4 max-w-[58ch] text-bone/60 md:col-span-8 lg:col-span-7">
           A product isn&rsquo;t one big idea. It&rsquo;s dozens of small decisions,
           each set to a level, all aimed at the same person. The idea is rarely
           the problem, yet the proportions are. A shade too premium, a format
@@ -154,8 +154,8 @@ export function Calibration() {
 
           <div className="lg:col-span-7">
             <div className="flex items-baseline justify-between border-b border-bone/15 pb-3">
-              <span className="label text-bone">The calibration</span>
-              <span className="label text-bone/40">Set to a proportion</span>
+              <span className="text-xs uppercase tracking-widest text-bone">The calibration</span>
+              <span className="text-xs text-bone/40">Set to a proportion</span>
             </div>
 
             <div
@@ -178,7 +178,7 @@ export function Calibration() {
                     <p
                       className={
                         isResult
-                          ? 'body-lg mt-3 font-normal text-bone'
+                          ? 'body-lg mt-3 font-medium text-bone'
                           : 'body-base mt-3 text-bone'
                       }
                     >

@@ -13,8 +13,8 @@ function Strip({ ariaHidden }: { ariaHidden?: boolean }) {
     <span aria-hidden={ariaHidden ? 'true' : undefined} className="flex shrink-0 items-center">
       {SEQUENCE.map((item, i) => (
         <span key={`${item}-${i}`} className="flex items-center">
-          <span className="display-2 whitespace-nowrap text-ink">{item}</span>
-          <span aria-hidden="true" className="display-2 px-6 text-amberDeep sm:px-8">
+          <span className="whitespace-nowrap text-lg font-bold text-ink sm:text-2xl">{item}</span>
+          <span aria-hidden="true" className="px-6 text-lg text-amberDeep sm:px-8 sm:text-2xl">
             +
           </span>
         </span>
@@ -27,15 +27,15 @@ export function WhoThisIsFor() {
   const reduceMotion = useReducedMotion()
 
   return (
-    <section className="relative bg-paper py-12 md:py-16">
+    <section className="relative bg-paper py-20 md:py-24">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
 
-      <Grid className="relative gap-y-6">
+      <Grid width="sm" className="relative gap-y-6">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow tone="light">Who I work with</Eyebrow>
         </div>
 
-        <h2 className="display-1 col-span-4 max-w-[14ch] text-ink md:col-span-8 lg:col-span-8">
+        <h2 className="col-span-4 max-w-[14ch] text-2xl font-normal text-ink sm:text-3xl md:col-span-8 md:text-4xl lg:col-span-8">
           <WordsPullUpMultiStyle
             align="left"
             segments={[{ text: 'People with something to launch.' }]}
@@ -45,7 +45,7 @@ export function WhoThisIsFor() {
         <MaskReveal
           as="p"
           order={1}
-          className="body-lg col-span-4 max-w-[52ch] text-ink/60 md:col-span-8 lg:col-span-6"
+          className="body-base col-span-4 max-w-[52ch] text-ink/60 md:col-span-8 lg:col-span-6"
         >
           Founders, brand directors, and innovation leads who&rsquo;d rather find
           out now than after the first production run.
@@ -53,10 +53,10 @@ export function WhoThisIsFor() {
       </Grid>
 
       {reduceMotion ? (
-        <Grid className="relative mt-10">
+        <Grid width="sm" className="relative mt-10">
           <div className="col-span-4 flex flex-wrap items-center gap-x-8 gap-y-3 md:col-span-8 lg:col-span-12">
             {AUDIENCES.map((item) => (
-              <span key={item} className="display-2 text-ink">
+              <span key={item} className="text-lg font-bold text-ink sm:text-2xl">
                 {item}
               </span>
             ))}

@@ -18,13 +18,13 @@ const ROTATING = ['launch it.', 'build it.', 'fund it.']
 
 export function About() {
   return (
-    <section id="about" className="relative overflow-hidden bg-paper py-20 md:py-28">
+    <section id="about" className="relative overflow-hidden bg-paper py-24 md:py-32">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
 
-      <Grid className="relative items-center gap-y-12">
+      <Grid width="full" className="relative items-center gap-y-12">
         {/* Full-bleed portrait: deliberately escapes the grid to the left edge. */}
         <div className="col-span-4 md:col-span-8 lg:col-span-5">
-          <ImageReveal className="-ml-6 md:-ml-10 lg:-ml-16">
+          <ImageReveal className="-ml-6">
             <div style={maskStyle(FEATHER_Y)}>
               <div className="relative" style={maskStyle(FEATHER_X)}>
                 <img
@@ -34,7 +34,7 @@ export function About() {
                   height={3482}
                   loading="lazy"
                   decoding="async"
-                  className="h-[55vh] w-full object-cover object-center lg:h-[72vh]"
+                  className="h-[55vh] w-full object-cover object-center lg:h-[78vh]"
                   onError={(event) => {
                     event.currentTarget.style.visibility = 'hidden'
                   }}
@@ -51,7 +51,7 @@ export function About() {
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
           <Eyebrow tone="light">Product &amp; Brand Strategist</Eyebrow>
 
-          <h2 className="display-1 mt-6 max-w-[14ch] text-ink">
+          <h2 className="display-1 mt-4 max-w-[14ch] text-ink lg:text-6xl">
             <WordsPullUpMultiStyle
               align="left"
               segments={[{ text: 'See it before you' }]}
@@ -59,13 +59,13 @@ export function About() {
             <RotatingWord words={ROTATING} className="font-serif italic" />
           </h2>
 
-          <MaskReveal as="p" order={1} className="body-lg mt-8 max-w-[46ch] text-ink/70">
+          <MaskReveal as="p" order={1} className="body-base mt-6 max-w-[46ch] text-ink/70">
             I make strategy tangible. Research, consumer understanding and
             commercial thinking, formulated into opportunities you can actually
             see before you build them.
           </MaskReveal>
 
-          <FadeUp delay={0.5} className="mt-10">
+          <FadeUp delay={0.5} className="mt-8">
             <BookACall variant="ink" />
           </FadeUp>
         </div>

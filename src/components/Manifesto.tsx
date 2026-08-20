@@ -19,15 +19,15 @@ const STATS = [
 
 export function Manifesto() {
   return (
-    <section id="thinking" className="relative bg-ink py-32 md:py-48">
+    <section id="thinking" className="relative bg-ink py-24 md:py-32">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.15]" />
 
-      <Grid className="relative gap-y-10">
+      <Grid width="md" className="relative gap-y-10">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow>The way I see it</Eyebrow>
         </div>
 
-        <h2 className="display-1 col-span-4 max-w-[16ch] text-bone md:col-span-8 lg:col-span-10">
+        <h2 className="display-1 col-span-4 max-w-[16ch] text-bone md:col-span-8 lg:col-span-10 lg:text-6xl xl:text-7xl">
           <WordsPullUpMultiStyle
             align="left"
             segments={[
@@ -38,10 +38,10 @@ export function Manifesto() {
         </h2>
 
         <div className="col-span-4 mt-6 md:col-span-8 lg:col-span-7 lg:col-start-6">
-          <MaskReveal as="p" className="body-lg max-w-[58ch] text-bone/80">
+          <MaskReveal as="p" className="body-base max-w-[58ch] text-bone/80">
             {PARAGRAPH_ONE}
           </MaskReveal>
-          <MaskReveal as="p" order={1} className="body-lg mt-8 max-w-[58ch] text-bone/80">
+          <MaskReveal as="p" order={1} className="body-base mt-8 max-w-[58ch] text-bone/80">
             {PARAGRAPH_TWO}
           </MaskReveal>
         </div>
@@ -51,9 +51,9 @@ export function Manifesto() {
             <div key={stat.label}>
               <CountUp
                 value={stat.value}
-                className="display-2 block text-bone"
+                className="block text-3xl font-bold text-bone sm:text-4xl md:text-5xl"
               />
-              <p className="label mt-3 text-bone/50">{stat.label}</p>
+              <p className="mt-3 text-[10px] uppercase tracking-wide text-bone/50 sm:text-xs">{stat.label}</p>
             </div>
           ))}
         </div>

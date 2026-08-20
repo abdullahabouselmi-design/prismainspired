@@ -90,26 +90,26 @@ function ProcessStep({ step, index }: { step: Step; index: number }) {
   return (
     <li ref={ref} className={divider} {...revealAttr()}>
       <div className="flex items-baseline gap-3">
-        <span className="label text-amberDeep">{step.number}</span>
-        <span className="label text-ink/50">{step.label}</span>
+        <span className="text-xs font-bold tracking-widest text-amberDeep">{step.number}</span>
+        <span className="text-xs uppercase tracking-widest text-ink/50">{step.label}</span>
       </div>
 
       <span className="mt-6 block">
         <step.Icon className="h-12 w-12 text-ink" accentClassName="text-amberDeep" />
       </span>
 
-      <h3 className="display-2 mt-6 text-ink">{step.title}</h3>
-      <p className="body-base mt-4 text-ink/60">{step.body}</p>
+      <h3 className="mt-6 text-lg font-bold text-ink sm:text-xl">{step.title}</h3>
+      <p className="mt-4 text-sm leading-relaxed text-ink/60">{step.body}</p>
     </li>
   )
 }
 
 export function Process() {
   return (
-    <section id="process" className="relative bg-paper py-16 md:py-24">
+    <section id="process" className="relative bg-paper py-24 md:py-32">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
 
-      <Grid className="relative gap-y-8">
+      <Grid width="lg" className="relative gap-y-8">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow tone="light">How I work</Eyebrow>
         </div>

@@ -30,28 +30,29 @@ type Stages = {
 }
 
 /**
- * Tuned to measured copy positions at 1440, not to assumed percentages. The
- * body sits between progress 0.32 and 0.60 of this trigger, so the nominal
- * 0.2/0.5/0.62/0.75-0.95 boundaries would have dropped the deck before the
- * first paragraph was read and drawn the diamond well after the closing line.
+ * Tuned to measured copy positions at 1440, not to assumed percentages.
+ * Re-measured after the production type scale and the 1024px container were
+ * restored: the section is shorter now, so the copy sits later in the trigger
+ * than it did before. The body runs 0.40 to 0.78, not the 0.32 to 0.60 the
+ * previous anchors were cut against.
  *
- *   0.322  first paragraph centred   -> deck still up
- *   0.398  "Six people approve..."   -> divergence underway
- *   0.422  "The misalignment..."     -> at maximum divergence
- *   0.446  "So before you brief..."  -> convergence begins
- *   0.601  closing line              -> diamond complete
+ *   0.420  first paragraph centred   -> deck still up
+ *   0.477  "Six people approve..."   -> divergence underway
+ *   0.537  "So before you brief..."  -> convergence begins
+ *   0.598  end of that paragraph     -> convergence underway
+ *   0.738  closing line centred      -> diamond complete
  *
- * Everything resolves by ~0.62 and the diamond then holds for the remainder,
+ * Everything resolves by ~0.76 and the diamond then holds for the remainder,
  * which is what the brief asks for.
  */
 const STAGES: Stages = {
-  deckOut: 0.34,
-  divergeStart: 0.36,
-  divergeEnd: 0.44,
-  holdEnd: 0.46,
-  convergeEnd: 0.62,
-  drawStart: 0.5,
-  drawEnd: 0.6,
+  deckOut: 0.44,
+  divergeStart: 0.46,
+  divergeEnd: 0.52,
+  holdEnd: 0.54,
+  convergeEnd: 0.76,
+  drawStart: 0.6,
+  drawEnd: 0.74,
 }
 
 export function GapDivergence() {

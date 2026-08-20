@@ -1,4 +1,4 @@
-/** Section eyebrow: a solid accent square, then the label. */
+/** Section eyebrow: an uppercase tracked label, in the section's accent. */
 export function Eyebrow({
   children,
   tone = 'dark',
@@ -10,11 +10,5 @@ export function Eyebrow({
   className?: string
 }) {
   const colour = tone === 'light' ? 'text-amberDeep' : 'text-amber'
-  const square = tone === 'light' ? 'bg-amberDeep' : 'bg-amber'
-  return (
-    <p className={`label flex items-center ${colour} ${className ?? ''}`}>
-      <span aria-hidden="true" className={`mr-2 inline-block h-1.5 w-1.5 shrink-0 ${square}`} />
-      {children}
-    </p>
-  )
+  return <p className={`label ${colour} ${className ?? ''}`}>{children}</p>
 }

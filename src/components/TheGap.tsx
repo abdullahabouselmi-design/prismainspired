@@ -15,18 +15,18 @@ const P3 =
 
 export function TheGap() {
   return (
-    <section className="relative bg-paper py-20 md:py-28">
+    <section className="relative bg-paper py-24 md:py-32">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
 
       {/* Behind the copy, out of the layout entirely. */}
       <GapDivergence />
 
-      <Grid className="relative gap-y-10">
+      <Grid width="sm" className="relative gap-y-10">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow tone="light">The gap</Eyebrow>
         </div>
 
-        <h2 className="display-1 col-span-4 max-w-[14ch] text-ink md:col-span-8 lg:col-span-5">
+        <h2 className="display-1 col-span-4 max-w-[14ch] tracking-[-0.02em] text-ink md:col-span-8 lg:col-span-5 lg:text-6xl">
           <WordsPullUpMultiStyle
             align="left"
             segments={[
@@ -37,10 +37,10 @@ export function TheGap() {
         </h2>
 
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
-          <MaskReveal as="p" className="body-lg max-w-[58ch] text-ink/70">
+          <MaskReveal as="p" className="body-base max-w-[58ch] text-ink/70">
             {P1}
           </MaskReveal>
-          <MaskReveal as="p" order={1} className="body-lg mt-8 max-w-[58ch] text-ink/70">
+          <MaskReveal as="p" order={1} className="body-base mt-8 max-w-[58ch] text-ink/70">
             {P2}
           </MaskReveal>
 

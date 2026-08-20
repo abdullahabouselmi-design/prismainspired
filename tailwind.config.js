@@ -14,9 +14,8 @@ export default {
         slate: { DEFAULT: '#2A3B47' },
       },
       fontFamily: {
-        display: ['"Clash Display"', 'sans-serif'],
-        sans: ['"Satoshi"', 'system-ui', 'sans-serif'],
-        serif: ['"Gambetta"', 'serif'],
+        sans: ['"Almarai"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
+        serif: ['"Instrument Serif"', 'serif'],
       },
     },
   },

@@ -9,105 +9,130 @@ team `abdullah-as-elmi`)
 
 ---
 
-## The one thing to understand
+## State: the foundation has been restored
 
-**The repo does not match production, and production is the approved look.**
+The repo's visual layer now matches production. The unapproved typography pass
+(Fontshare faces, one oversized scale, a single 1600px grid) is gone; Almarai +
+Instrument Serif, the measured type scale, the per-section containers and the
+section rhythm are back. Phase 0's motion infrastructure and The Gap SVG were
+kept — they sit on top of production's look rather than replacing it.
 
-The working tree carries a typography/layout pass that was never approved
-(Fontshare faces, one oversized type scale, a single wide grid). Production was
-deliberately rolled back away from it. Everything since then must sit on top of
-production's look.
+Production's source was never in version control, so this was a reconstruction
+from measurement. Two artefacts made that reliable and are worth reusing:
 
-**There is no git route back.** `02f718a` is the *root* commit and contains the
-entire project, so reverting it deletes everything. The pre-typography source
-exists nowhere in version control. Restoration is therefore a **reconstruction
-guided by measurement of the live site**, which is why the table below exists.
+- Production's built CSS and its live DOM are the real specification. Fetch
+  `https://prismainspired.vercel.app/assets/index-*.css` and read computed
+  styles off the live page; do not trust the repo or this file over that.
+- Production carries **no type-scale classes at all** — it uses inline Tailwind
+  utilities plus one global `* { font-family: Almarai … }` rule. The repo keeps
+  its six scale classes, tuned so they resolve to production's exact values at
+  every breakpoint.
+
+## Verified against production (1440 × 900, both loaded and settled)
+
+| Check | Result |
+|---|---|
+| Registered font faces | identical |
+| Body type | Almarai 16px/400, identical |
+| Section `padY` (all 10) | identical |
+| Container `max-width` / padding (all 10) | identical |
+| `h2` size / weight / line-height (all 9) | identical |
+| Eyebrow 12px/400/1.2px uppercase, no square | identical |
+| Horizontal overflow at 1440/1024/768/375 | none |
+| `reducedMotion: 'reduce'` | no Three.js request, no hidden text, no stranded `data-reveal` |
+| Total document height | 12,434 vs production 12,344 (**+90**) |
+
+`npx tsc -b --noEmit` and `npm run build` are clean.
+
+**Measure production with the preloader and fonts settled** (~4s, then await
+`document.fonts.ready`). Measured too early it reports ~11,588px, not 12,344.
+
+## Known deviations, and why
+
+The +90px is the sum of section-height differences that are **structural, not
+typographic**. Production's markup differs from the repo's, and the repo keeps
+its Phase 0 component architecture by instruction:
+
+| Section | Δ | Cause |
+|---|---|---|
+| Manifesto | −84 | production centres the copy in a `rounded-2xl bg-panel` card; repo uses a left-aligned grid |
+| The Gap | +89 | repo adds the GapDivergence layer and splits the copy differently |
+| Services | +104 | production has an intro paragraph the repo does not, and a different card grid |
+| Calibration | −112 | pin distance is `+=320%` vs production's 2304px (`+=256%`), and the can is `68vh` vs production's `80vh` |
+| Work / Who / Contact | +88 / +96 / −95 | markup structure |
+
+Three items were left alone deliberately — each needs a decision, not a fix:
+
+1. **Hero nav.** Production is 14px sentence case; the repo's nav uses the
+   shared `.label` class, so it renders 12px uppercase tracked. Closing this
+   needs one token changed in `Hero.tsx` (`label` → `text-sm`), and `Hero.tsx`
+   is frozen, so it was not touched. Everything else in Hero matches
+   production exactly: section box, scroll-button box, and the `h1` at
+   79.2px/800, leading 68.112px, tracking −2.376px, glyph width 427.7px.
+2. **Calibration pin geometry** (above) — `CanScene`/`Calibration` behaviour is
+   on the do-not-touch list.
+3. **About portrait width.** Production's image column is `45vw` (648px); the
+   repo's 12-column grid gives 590px. Both bleed to `x: 0`. Matching exactly
+   means replacing About's grid with production's `lg:grid-cols-[45vw_1fr]`.
 
 ## Commit history
 
-| Commit | What it is | Keep? |
+| Commit | What it is |
+|---|---|
+| *(this one)* | Restore production as the visual foundation |
+| `a255402` | The Gap: scroll-driven divergence→resolution SVG |
+| `c8d9ee7` | Phase 0: motion foundation hardening |
+| `88678dc` | Empty checkpoint before Phase 0 |
+| `02f718a` | Root commit — contains the whole project **including the unapproved typography pass**, so it cannot be reverted |
+
+## The type scale (`src/index.css`)
+
+Sizes are Tailwind's own steps, so each class carries Tailwind's paired
+line-height and resolves identically to production at every breakpoint.
+Headlines are weight 400 — preflight sets `h1–h6 { font-weight: inherit }`.
+
+| Class | Resolves to (1440) | Used by |
 |---|---|---|
-| `a255402` | The Gap: scroll-driven divergence→resolution SVG | **Yes** — additive |
-| `c8d9ee7` | Phase 0: motion foundation hardening | **Yes** — no visual output |
-| `88678dc` | Empty checkpoint before Phase 0 | — |
-| `02f718a` | Root commit. Contains the whole project **including the unapproved typography pass** | Cannot be reverted |
+| `display-hero` | 5.5vw / 800 / 0.86 / −0.03em | Hero only |
+| `display-1` | 48/400 | Services, Process, Calibration, Work |
+| `display-2` | 24/700 | Services `h3` |
+| `body-lg` | 18/400 | Gap closing line, Calibration result |
+| `body-base` | 16/400 | body copy everywhere |
+| `label` | 12/400/1.2px uppercase | eyebrows and small labels |
 
-## Measured production baseline (live, 1440px)
+Production renders four headline sizes, so sections needing 72/60/36 add the
+step explicitly: About `lg:text-6xl`, Manifesto `lg:text-6xl xl:text-7xl`,
+The Gap `lg:text-6xl` + `tracking-[-0.02em]`, Contact and Who I work with set
+their own ladders.
 
-Faces: `Almarai 300/400/700/800` + `Instrument Serif 400 italic` (Google Fonts).
-Body 16px/400. **Total document height 12,344px** — the single best signal that
-a restoration is complete.
+`Grid` takes `width`: `sm` 1024 · `md` 1152 · `lg` 1280 (default) · `full`
+(no max-width, About only). Gutters are 24px at every breakpoint, which
+`--bleed` mirrors for `.full-bleed`.
 
-| Section | bg | pad Y | container | pad X | h2 | body |
-|---|---|---|---|---|---|---|
-| Hero | ink | 24 | — | 0 | — | — |
-| About | paper | 128 | none | 0 | 60/400 | 16/400 |
-| Manifesto | ink | 128 | 1152 | 24 | **72**/400 | 16/400 |
-| The Gap | paper | 128 | 1024 | 24 | 60/400 | 16/400 |
-| Services | ink | 128 | 1280 | 24 | 48/400 | 16/400 |
-| Process | paper | 128 | 1280 | 24 | 48/400 | 16/400 |
-| Calibration | ink | **160** | 1280 | 24 | 48/400 | 16/400 |
-| Work | paper | 128 | 1152 | 24 | 48/400 | **14**/400 |
-| Who I work with | paper | **96** | 1024 | 24 | 36/400 | 16/400 |
-| Contact | ink | 0 | 1024 | 24 | **72**/400 | 16/400 |
+## The Gap animation
 
-Eyebrow: 12px / weight 400 / tracking 1.2px / uppercase / amber — **no square**.
+`GapDivergence.tsx`'s `STAGES` were re-measured after the restoration — the
+section is shorter now, so the copy runs progress **0.40→0.78**, not the old
+0.32→0.60. Anchors: 0.420 first paragraph · 0.477 "Six people approve" ·
+0.537 "So before you brief" · 0.738 closing line. All four stages were
+re-captured and confirmed: deck holds at 0.40, full divergence at 0.53,
+converging at 0.66, diamond complete at 0.80.
 
-Re-measure any time with the live site as the target; do not trust the repo.
+**Re-measure these whenever the Gap section's height changes.**
 
-## NEXT TASK — restore the foundation
+## Verifying
 
-Full plan: `~/.claude/plans/you-are-acting-as-tidy-snowflake.md`
-
-1. **`index.html`** — swap the three Fontshare links for Google Fonts:
-   `Almarai:wght@300;400;700;800` and `Instrument+Serif:ital@1`.
-2. **`tailwind.config.js`** — `fontFamily.sans` → Almarai stack;
-   `fontFamily.serif` → `"Instrument Serif"`; drop `fontFamily.display`.
-   Leave colour tokens alone.
-3. **`src/index.css`** — retune the six scale classes (`display-hero`,
-   `display-1`, `display-2`, `body-lg`, `body-base`, `label`) to the measured
-   values. Weight **400**, not 600/700. Production uses four headline sizes, so
-   `display-1` becomes the 48px default and sections needing 72/60/36 set it
-   explicitly.
-4. **`src/components/Eyebrow.tsx`** — 12px / 400 / tracking 1.2px, remove the
-   accent square.
-5. **`src/components/Grid.tsx`** — add a `width` prop
-   (`'sm' | 'md' | 'lg'` → 1024 / 1152 / 1280, default 1280) and `px-6`.
-   Each section passes its measured width.
-6. **Section rhythm** — one padding class per section file: 128 everywhere,
-   except Calibration 160, Who I work with 96, Contact 0.
-7. **Re-tune `GapDivergence.tsx`** — required. Its `STAGES` boundaries were
-   measured against the *current* Gap section; restoring production's type and
-   containers changes that section's height, so the old anchors
-   (0.322 / 0.398 / 0.422 / 0.446 / 0.601) will move. Re-measure and update.
-
-### Do not touch
-
-`Hero.tsx`, `Preloader.tsx`, `useHeroParallax.ts`, `src/lib/motion.ts`,
-`MaskReveal`, `FadeUp`, `Reveal`, `ImageReveal`, `CanScene`/`Calibration`
-behaviour, Lenis config, `public/hero-poster.png`, `public/hero-loop.mp4`,
-`public/portrait.webp`.
-
-## Verification
-
-1. `npx tsc -b --noEmit` and `npm run build` clean.
-2. **Diff against production, not against intent.** Load the live site and a
-   local `vite preview` of the production build at 1440 and assert equality on:
-   registered font faces, per-section `h2` size/weight, container
-   `max-width`/padding, section `padY`, and total document height (12,344px).
-3. No horizontal overflow at 1440 / 1024 / 768 / 375.
-4. `reducedMotion: 'reduce'` — all content visible, zero Three.js requests.
-5. Hero geometry fingerprint unchanged (section, `h1`, `nav`, scroll-button
-   boxes and computed font size).
-6. Re-capture The Gap's four stages after re-tuning.
-7. Commit the restoration on its own, separate from later creative work.
+`.claude/launch.json` has a `preview` config (`vite preview`, port 4173).
+The in-app browser pane pauses rAF when hidden, which stalls Lenis and leaves
+reveals unplayed — drive scroll-dependent checks with Playwright instead
+(it is already in `node_modules`). Lenis lerps toward an accumulated target,
+so wheel the whole remaining delta once and wait ~700ms rather than nudging.
 
 ## Known state and risks
 
 - **Assets:** `hero-poster.png` is 29.7MB and sits in the critical path as the
   video poster — frozen by instruction, but it dominates load time.
-  `portrait.webp` is 0.9MB (was 19.9MB; PSNR 41.3dB at render size).
-  `public/` totals ~42MB, so deploys are slow.
+  `portrait.webp` is 0.9MB. `public/` totals ~42MB, so deploys are slow.
 - **GSAP registers ~117 of its own resize listeners**, one per ScrollTrigger.
   That is by design, not a leak. Our own bus is exactly one listener.
 - **Vite dev duplicates `src/lib/motion.ts`**, so the dev server shows 2 bus
@@ -115,3 +140,4 @@ behaviour, Lenis config, `public/hero-poster.png`, `public/hero-loop.mp4`,
 - Preview deployments are SSO-gated; only the production alias is public.
 - Placeholder copy still marked `// TODO:` in Services, Process, Work,
   Who I work with, and Contact (email + LinkedIn).
+- Nothing has been deployed. The restoration is committed but not shipped.

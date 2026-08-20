@@ -50,10 +50,10 @@ const CARDS: Card[] = [
 
 export function Services() {
   return (
-    <section id="services" className="relative bg-ink py-16 md:py-24">
+    <section id="services" className="relative bg-ink py-24 md:py-32">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.15]" />
 
-      <Grid className="relative gap-y-8">
+      <Grid width="lg" className="relative gap-y-8">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow>Services</Eyebrow>
         </div>
@@ -70,16 +70,16 @@ export function Services() {
                   <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-bone/5">
                     <card.Icon className="h-6 w-6 text-amber" />
                   </span>
-                  <span className="label text-bone/40">{card.number}</span>
+                  <span className="text-xs text-bone/40">{card.number}</span>
                 </div>
 
                 <h3 className="display-2 mt-6 text-bone">{card.title}</h3>
 
-                <p className="body-base mt-4 text-bone/60">{card.description}</p>
+                <p className="mt-4 text-sm leading-relaxed text-bone/60">{card.description}</p>
 
                 <hr className="my-6 border-t border-bone/10" />
 
-                <p className="body-base font-normal text-bone">{card.closing}</p>
+                <p className="text-sm font-medium text-bone">{card.closing}</p>
               </article>
             </Reveal>
           ))}

@@ -34,10 +34,10 @@ const TIERS = [
 
 export function Work() {
   return (
-    <section id="work" className="relative bg-paper py-16 md:py-24">
+    <section id="work" className="relative bg-paper py-24 md:py-32">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
 
-      <Grid className="relative gap-y-8">
+      <Grid width="md" className="relative gap-y-8">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow tone="light">Where the work has been applied</Eyebrow>
         </div>
@@ -54,16 +54,16 @@ export function Work() {
             <div key={tier.tier}>
               <div className="flex items-baseline gap-4">
                 <span className="label shrink-0 text-amberDeep">{tier.tier}</span>
-                <span className="display-2 shrink-0 text-ink">{tier.name}</span>
+                <span className="shrink-0 text-lg font-bold text-ink">{tier.name}</span>
                 <span aria-hidden="true" className="h-px w-full bg-ink/15" />
               </div>
 
-              <p className="body-base mt-4 max-w-[64ch] text-ink/60">{tier.description}</p>
+              <p className="mt-4 max-w-[64ch] text-sm text-ink/60">{tier.description}</p>
 
               <ul className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-3 lg:grid-cols-4">
                 {tier.names.map((mark, i) => (
                   <Reveal key={`${tier.tier}-${mark}`} index={i % 4}>
-                    <li className="label text-ink/40 transition-colors hover:text-ink">
+                    <li className="text-sm uppercase tracking-wide text-ink/40 transition-colors hover:text-ink sm:text-base">
                       {mark}
                     </li>
                   </Reveal>
