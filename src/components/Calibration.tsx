@@ -62,7 +62,7 @@ export function Calibration() {
                   needs its own ground for the rows to pass behind — and it
                   pins to the very top, or rows would reappear above it. At lg
                   it sits in its own column and needs neither. */}
-              <div className="sticky top-0 z-10 mb-10 flex h-[30vh] items-center justify-center bg-ink md:h-[34vh] lg:top-[14vh] lg:mb-0 lg:h-[52vh] lg:bg-transparent">
+              <div className="sticky top-0 z-10 mb-10 flex h-[38vh] items-center justify-center bg-ink md:h-[40vh] lg:top-[14vh] lg:mb-0 lg:h-[52vh] lg:bg-transparent">
                 <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.15] lg:hidden" />
                 <CalibrationCan triggerRef={rowsRef} onBeat={onBeat} />
               </div>

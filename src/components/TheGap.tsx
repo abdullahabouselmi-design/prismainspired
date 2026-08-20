@@ -2,7 +2,6 @@ import { WordsPullUpMultiStyle } from './WordsPullUpMultiStyle'
 import { MaskReveal } from './MaskReveal'
 import { Grid } from './Grid'
 import { Eyebrow } from './Eyebrow'
-import { GapDivergence } from './GapDivergence'
 
 const P1 =
   'Slides leave the hardest part to your imagination, and everyone in the room imagines something slightly different.'
@@ -17,9 +16,6 @@ export function TheGap() {
   return (
     <section className="relative bg-paper py-24 md:py-32">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
-
-      {/* Behind the copy, out of the layout entirely. */}
-      <GapDivergence />
 
       <Grid width="sm" className="relative gap-y-10">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">

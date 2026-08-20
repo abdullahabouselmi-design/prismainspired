@@ -56,9 +56,9 @@ its Phase 0 component architecture by instruction:
 | Section | Δ | Cause |
 |---|---|---|
 | Manifesto | −84 | production centres the copy in a `rounded-2xl bg-panel` card; repo uses a left-aligned grid |
-| The Gap | +89 | repo adds the GapDivergence layer and splits the copy differently |
+| The Gap | small | the repo splits the copy differently; the GapDivergence layer is gone |
 | Services | +104 | production has an intro paragraph the repo does not, and a different card grid |
-| Calibration | −2,131 | **deliberate.** The 3D can was cut and the section rebuilt; it no longer pins for 320% of the viewport |
+| Calibration | −2,000 approx | **deliberate.** The 3D can was cut and the section rebuilt; it no longer pins for 320% of the viewport |
 | Work / Who / Contact | +88 / +96 / −95 | markup structure |
 
 Three items were left alone deliberately — each needs a decision, not a fix:
@@ -112,74 +112,61 @@ their own ladders.
 
 ## How I think — the can
 
-The 3D can is gone and so is the shelf sequence that briefly replaced it.
-`CanScene.tsx`, `CanFallback.tsx` and `ShelfCalibration.tsx` are all deleted.
-The section is now `CalibrationCan.tsx`: hand-drawn SVG, one mechanic.
+Three versions of this section have now been cut: the original 3D can
+(`CanScene.tsx`, 814KB of three.js), a shelf sequence, and an SVG can that drew
+itself part by part. All three are gone. What is there now is a **2D canvas
+point cloud** — the same technique as `abdullahabouselmi.vercel.app`, which is
+the user's own other site, adapted to bone-on-ink.
 
-**Why the shelf was cut.** It ran seven different mechanics — bracket, off-shelf
-leader, re-sort, veil, narrowing rail, lift — so nothing accumulated and it read
-as seven tricks. It also anchored on *"where it sits against everything beside
-it"*, one row of seven, when the copy's thesis is its first line: *a product
-isn't one big idea, it's dozens of small decisions.*
+**Why the earlier two were cut.** The shelf ran seven different mechanics, so
+nothing accumulated and it read as seven tricks. The drawn SVG can was one
+mechanic but too quiet. Both were rejected on sight; do not revive either
+without a specific reason.
 
-**The concept.** Open on five facings on a rail, all equal, nothing chosen. The
-other four fade, the rail clears, and from the empty frame a single can **draws
-itself, one part per row**. Nothing ever leaves; every beat adds. At Result the
-label band turns amber and a ground line returns beneath it.
+**The concept.** A can built from ~14,000 points on a surface of revolution.
+It sits whole and unmarked, turning slowly. Each row peels one horizontal band
+away from the stack — six bands for the six components — and the band being set
+lights amber. At Result the bands reseat into one can carrying a single amber
+band around its middle.
 
-| Beat | Part drawn |
-|---|---|
-| 01 Audience | the shelf resolves to one, then the base curve |
-| 02 Product | the body sides |
-| 03 Positioning | the neck |
-| 04 Price | the rolled rim |
-| 05 Message | the lid, rivet and tab |
-| 06 Channel | the label band |
-| 07 Result | band turns amber, ground line returns |
+**Mechanics.** Not GSAP-tweened. A `ScrollTrigger` writes scroll progress into a
+ref; a `requestAnimationFrame` loop eases the drawn value toward it and repaints.
+The loop only runs while the trigger is active (`onToggle`) and never starts
+under reduced motion, which paints one finished frame instead.
 
-The parts are deliberately **unlabelled**. The drawing accumulates as the
-thinking accumulates; claiming "Audience *is* the base" would be a false
-mapping.
+Per point: position on the lathe, a normal, a band index, and a brightness.
+Per frame: each band gets its own vertical offset and its own yaw, then a
+hand-rolled perspective projection (`s = focal / dz`), a facing term so points
+whose surface turns toward the viewer carry the light, and a size/alpha falloff
+by depth. Rendering is **two passes** — one bone, one amber — so the fill colour
+changes twice per frame rather than 14,000 times.
 
-**Drawing the can.** Depth is perspective alone — every horizontal shares one
-viewing angle (minor/major 0.24), the base shows only its front curve because
-the back is behind the body, and the neck is a short concave taper. Real 355ml
-proportions: 1.9:1, necking in only over the top ~10%. An earlier pass used long
-straight tapers top and bottom and read as an octagon.
+`focal` is derived from the canvas box (`min(1.15h, 2.7w)`) so the can fills
+whatever frame it is given, and pulls back by 32% as it opens so the full spread
+of six bands still fits. A fixed focal clipped the can on mobile.
 
-**Mechanics.** One timeline pinned to duration 1 (the `GapDivergence` idiom),
-scrubbed by a ScrollTrigger on the rows container at `top 20%` / `bottom 55%`.
-Beat *k* fires at `k/7 + 0.015`. The lit row is read from `tl.progress()`, not
-the trigger's, so copy and drawing cannot drift apart. Layout is two columns
-with the can `position: sticky` in the left one — no pin, no spacer.
+Layout is two columns with the canvas `position: sticky` in the left one. Below
+`lg` the can and rows share a column, so the sticky element needs its own
+`bg-ink` and noise overlay for rows to pass behind it, must pin to `top-0`, and
+its wrapper uses `contents lg:block` to get a tall containing block at any width.
 
-**Three traps, all hit while building this.**
+**Point counts:** 6,500 below 700px, 14,000 above. Buffers are typed arrays and
+are rebuilt on the shared resize bus.
 
-1. **`vector-effect: non-scaling-stroke` breaks stroke-dashoffset drawing.** The
-   browser measures the dash array in screen units while `getTotalLength()`
-   returns user units, so at any SVG scale other than 1 the gap stops covering
-   the path and undrawn segments leak fragments. It is removed here. Note
-   `GapDivergence.tsx` still uses it — it gets away with it only because its
-   viewBox renders at roughly 1:1.
-2. **A round line-cap paints a dot on a zero-length dash**, which is exactly
-   what an undrawn segment is. Caps are `butt`, the gap is `2 * len` (a tight
-   margin lets the tail wrap back in, since `getTotalLength()` under-reports
-   curves), and each part's group is held at `opacity: 0` until its beat.
-3. **Below `lg` the can and the rows share a column**, so the sticky can needs
-   its own `bg-ink` and its own noise overlay for rows to pass behind it, and it
-   must pin to `top-0` or rows reappear above it. The wrapper uses `contents
-   lg:block` so the sticky element gets a tall containing block at every width.
+## The Gap
 
-## The Gap animation
+`GapDivergence.tsx` is **deleted**. The scroll-driven SVG that scattered six
+shapes and resolved them into a diamond was removed at the user's request; the
+section is now copy only. Do not reinstate it.
 
-`GapDivergence.tsx`'s `STAGES` were re-measured after the restoration — the
-section is shorter now, so the copy runs progress **0.40→0.78**, not the old
-0.32→0.60. Anchors: 0.420 first paragraph · 0.477 "Six people approve" ·
-0.537 "So before you brief" · 0.738 closing line. All four stages were
-re-captured and confirmed: deck holds at 0.40, full divergence at 0.53,
-converging at 0.66, diamond complete at 0.80.
-
-**Re-measure these whenever the Gap section's height changes.**
+One thing learnt there is worth keeping, because it will bite again:
+**`vector-effect: non-scaling-stroke` silently breaks `stroke-dashoffset`
+drawing.** The browser measures the dash array in screen units while
+`getTotalLength()` returns user units, so at any SVG scale other than 1:1 the
+gap stops covering the path and undrawn segments leak fragments. Also, a round
+line-cap paints a dot on a zero-length dash — which is exactly what an undrawn
+segment is. Use `butt` caps, a gap of `2 * len`, and hold each part at
+`opacity: 0` until it is due.
 
 ## Verifying
 
