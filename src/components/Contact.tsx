@@ -3,6 +3,18 @@ import { MaskReveal } from './MaskReveal'
 import { BookACall } from './BookACall'
 import { Grid } from './Grid'
 import { Eyebrow } from './Eyebrow'
+import { SpinningText } from './SpinningText'
+
+const LINKEDIN_URL = 'https://www.linkedin.com/in/aaselmi/'
+
+/** Filled brand glyph. lucide-react dropped brand icons, so this is by hand. */
+function LinkedInMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.71h.05a4.17 4.17 0 0 1 3.75-2.06c4.01 0 4.75 2.64 4.75 6.07V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21H9V9Z" />
+    </svg>
+  )
+}
 
 export function Contact() {
   return (
@@ -38,31 +50,32 @@ export function Contact() {
           <span className="text-xs text-bone/40">Usually replies within a day</span>
         </div>
 
-        <footer className="col-span-4 mt-16 flex flex-col gap-8 border-t border-bone/10 pt-8 md:col-span-8 sm:flex-row sm:items-start sm:justify-between lg:col-span-12">
+        <footer className="col-span-4 mt-16 flex flex-col gap-10 border-t border-bone/10 pt-8 md:col-span-8 sm:flex-row sm:items-center sm:justify-between sm:gap-8 lg:col-span-12">
           <div>
             <p className="text-sm font-bold tracking-wide text-bone">ABDULLAH ABOU SELMI</p>
             <p className="mt-1 text-xs text-bone/40">Product &amp; Brand Strategist</p>
-
-            <div className="mt-4 flex items-center gap-5 text-xs text-bone/40">
-              {/* TODO: real email address */}
-              <a href="mailto:hello@example.com" className="transition-colors hover:text-bone">
-                hello@example.com
-              </a>
-              {/* TODO: real LinkedIn URL */}
-              <a
-                href="https://www.linkedin.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors hover:text-bone"
-              >
-                LinkedIn
-              </a>
-            </div>
+            <p className="mt-4 text-xs text-bone/30">&copy; 2026. All rights reserved.</p>
           </div>
 
-          <div className="sm:text-right">
-            <p className="text-xs text-bone/40">Strategy made seen</p>
-            <p className="mt-2 text-xs text-bone/30">&copy; 2026 &mdash; All rights reserved</p>
+          {/* The negative space between the name and the badge. */}
+          <div className="flex items-center gap-5 text-xs text-bone/40">
+            {/* TODO: real email address */}
+            <a href="mailto:hello@example.com" className="transition-colors hover:text-bone">
+              hello@example.com
+            </a>
+            <a
+              href={LINKEDIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="transition-colors hover:text-bone"
+            >
+              <LinkedInMark className="h-[18px] w-[18px]" />
+            </a>
+          </div>
+
+          <div className="h-28 w-28 shrink-0 text-bone/40 sm:h-32 sm:w-32">
+            <SpinningText text="Strategy Made Seen" />
           </div>
         </footer>
       </Grid>

@@ -23,7 +23,7 @@ const CARDS: Card[] = [
     title: 'Consumer & Category Insight',
     description:
       'Consumer research, category and competitive benchmarking, need-gap analysis, whitespace mapping.',
-    closing: 'Not who they say they are — what they actually reach for, and why.',
+    closing: 'Not who they say they are, but what they actually reach for, and why.',
     form: 'bottle',
     tone: BONE,
   },

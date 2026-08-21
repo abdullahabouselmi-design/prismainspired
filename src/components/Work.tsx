@@ -72,7 +72,7 @@ const TIERS = [
     tier: 'Tier 1',
     name: 'Brands',
     description:
-      'Six years inside FMCG — relaunches, distribution partnerships, and market entry.',
+      'Six years inside FMCG, covering relaunches, distribution partnerships and market entry.',
     logos: TIER_ONE_LOGOS,
     duration: '46s',
   },
@@ -80,7 +80,7 @@ const TIERS = [
     tier: 'Tier 2',
     name: 'Organisations',
     description:
-      'Two years in strategy consulting — research, benchmarking, and strategic frameworks across public and private sector.',
+      'Two years in strategy consulting, covering research, benchmarking and strategic frameworks across the public and private sector.',
     logos: TIER_TWO_LOGOS,
     duration: '58s',
   },

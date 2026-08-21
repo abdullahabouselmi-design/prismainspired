@@ -138,7 +138,7 @@ export function CalibrationCan({
       // Focal is derived from the frame, not fixed, so the can fills whatever
       // box it is given — and it pulls back as it opens so the full spread of
       // six bands still fits.
-      const fit = Math.min(1.15 * h, 2.7 * w)
+      const fit = Math.min(1.22 * h, 2.9 * w)
       const focal = fit * (1 - 0.32 * open)
       const camZ = -CAN_H * 1.6
       const cx = w / 2
@@ -214,28 +214,46 @@ export function CalibrationCan({
       raf = requestAnimationFrame(frame)
     }
 
+    const setBeat = (p: number) => {
+      const b = clamp(Math.floor(p * BEATS), 0, BEATS - 1)
+      if (b !== beatRef.current) {
+        beatRef.current = b
+        onBeat(b)
+      }
+    }
+
     const st = ScrollTrigger.create({
       trigger,
       start: 'top 20%',
       end: 'bottom 55%',
       onUpdate: (self) => {
         target.current = self.progress
-        const b = clamp(Math.floor(self.progress * BEATS), 0, BEATS - 1)
-        if (b !== beatRef.current) {
-          beatRef.current = b
-          onBeat(b)
-        }
+        setBeat(self.progress)
       },
-      onToggle: (self) => {
-        running = self.isActive
-        if (running) {
+      // Past either edge onUpdate stops firing, so pin an explicit destination.
+      // Without this the loop is cut mid-ease on the way out and the can
+      // freezes part-separated, which is why scrolling back up did not undo
+      // what scrolling down had done.
+      onLeave: () => { target.current = 1; setBeat(1) },
+      onLeaveBack: () => { target.current = 0; setBeat(0) },
+    })
+
+    // The loop is gated on proximity, not on the trigger being active, so it
+    // survives long enough to ease to the pinned destination after an exit.
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting && !running) {
+          running = true
           last = performance.now()
           raf = requestAnimationFrame(frame)
-        } else {
+        } else if (!e.isIntersecting && running) {
+          running = false
           cancelAnimationFrame(raf)
         }
       },
-    })
+      { rootMargin: '500px 0px' },
+    )
+    io.observe(box)
 
     // Visible before the trigger is entered, so paint one resting frame.
     draw(0)
@@ -250,6 +268,7 @@ export function CalibrationCan({
 
     return () => {
       cancelAnimationFrame(raf)
+      io.disconnect()
       st.kill()
       stopResize()
     }

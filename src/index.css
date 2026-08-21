@@ -85,6 +85,21 @@ html {
     animation: marquee-scroll var(--marquee-duration, 38s) linear infinite;
   }
 
+  @keyframes badge-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .badge-spin {
+    animation: badge-spin var(--badge-duration, 24s) linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .badge-spin {
+      animation: none;
+    }
+  }
+
   /* Fades the run into the page at both ends, so a banner reads as part of the
      background rather than a strip with two hard cuts. */
   .marquee-fade {
