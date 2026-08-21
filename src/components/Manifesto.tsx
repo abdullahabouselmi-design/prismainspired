@@ -19,10 +19,10 @@ const STATS = [
 
 export function Manifesto() {
   return (
-    <section id="thinking" className="relative bg-ink py-24 md:py-32">
+    <section id="thinking" className="relative bg-ink py-16 md:py-20">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.15]" />
 
-      <Grid width="md" className="relative gap-y-10">
+      <Grid width="lg" className="relative gap-y-8">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow>The way I see it</Eyebrow>
         </div>
@@ -46,7 +46,7 @@ export function Manifesto() {
           </MaskReveal>
         </div>
 
-        <div className="col-span-4 mt-16 grid grid-cols-2 gap-8 md:col-span-8 md:grid-cols-4 lg:col-span-12">
+        <div className="col-span-4 mt-10 grid grid-cols-2 gap-8 md:col-span-8 md:grid-cols-4 lg:col-span-12">
           {STATS.map((stat) => (
             <div key={stat.label}>
               <CountUp

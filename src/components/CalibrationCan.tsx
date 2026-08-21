@@ -150,10 +150,9 @@ export function CalibrationCan({
         for (let i = 0; i < cloud.n; i++) {
           const k = cloud.band[i]
           // A band only lights once it is actually moving, so the can sits
-          // whole and unmarked until the section is entered.
-          const hot = marked
-            ? Math.abs(cloud.y[i]) < CAN_H * 0.15
-            : k === active && sep[k] > 0.02
+          // whole and unmarked until the section is entered. At Result the
+          // whole object lights, not a band around its middle.
+          const hot = marked ? true : k === active && sep[k] > 0.02
           if (hot !== (pass === 1)) continue
 
           const py = cloud.y[i] + ((NB - 1) / 2 - k) * SPREAD * sep[k]
@@ -177,7 +176,7 @@ export function CalibrationCan({
 
           const px = clamp((focal * 1.15) / dz, 0.7, 2.4)
           let al = cloud.bri[i] * (0.3 + 0.7 * face) * clamp(1.6 / px, 0.4, 1)
-          if (hot) al *= 1.25
+          if (hot) al *= 1.18
           if (al > 1) al = 1
           ctx!.globalAlpha = al
           ctx!.fillRect(sx, sy, px, px)

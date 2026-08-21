@@ -40,7 +40,7 @@ from measurement. Two artefacts made that reliable and are worth reusing:
 | Eyebrow 12px/400/1.2px uppercase, no square | identical |
 | Horizontal overflow at 1440/1024/768/375 | none |
 | `reducedMotion: 'reduce'` | no Three.js request, no hidden text, no stranded `data-reveal` |
-| Total document height | 10,307 vs production 12,344 — the gap is the redesigned How I think section |
+| Total document height | **superseded** — see the compaction pass below. No longer a check against production. |
 
 `npx tsc -b --noEmit` and `npm run build` are clean.
 
@@ -152,6 +152,38 @@ its wrapper uses `contents lg:block` to get a tall containing block at any width
 
 **Point counts:** 6,500 below 700px, 14,000 above. Buffers are typed arrays and
 are rebuilt on the shared resize bus.
+
+## Layout pass — containers, headlines, compaction
+
+The production-matching invariant is **retired**. Three deliberate divergences,
+directed by the owner:
+
+- **One container width.** Every section is `Grid width="lg"` (1280). Previously
+  the page walked `full → 1152 → 1024 → 1280 → 1280 → 1280 → 1152 → 1024 → 1024`,
+  so almost no two sections' content started at the same x. About stays `full`
+  because its portrait bleeds off the left edge.
+- **Headlines on one line.** The binding constraint was `max-w-[NNch]` on each
+  `h2`, not the column span — `WordsPullUpMultiStyle` adds no per-word spans, so
+  removing the cap simply reflows. Caps are gone everywhere except **Manifesto**
+  (needs 1599px at 72px — impossible at 1440) and **The Gap** (its italic second
+  clause is a deliberate `startsNewLine` break). About's headline still wraps: it
+  sits in a narrow column beside the portrait.
+- **Compaction.** Sections went `py-24 md:py-32` → `py-16 md:py-20`, BoundaryGap
+  `12vh` → `6vh`, and Calibration's rows `py-14` → `py-6`. Document height
+  **10,331 → 7,945px at 1440, a 23% cut.**
+
+## Services — particle product cards
+
+`ServiceIcons.tsx` is deleted. Each card now carries a `ProductCloud.tsx` — the
+same point-cloud technique as the can, but with no scroll coupling and no bands:
+idle rotation, one fill colour, ~2,200 points, gated by an `IntersectionObserver`
+so off-screen cards cost nothing (verified: painting on screen, fully paused off).
+
+Forms are bottle / carton / tub / can, toned bone / amber alternating. **End caps
+matter**: without a scatter across the top and bottom faces a carton is a hollow
+ring of dots and reads as a blob. Equal card heights need `h-full` on *both* the
+`Reveal` and the `<article>`, because `Reveal` interposes a div; the closing rule
+uses `mt-auto` so the rules line up across a row.
 
 ## The Gap
 

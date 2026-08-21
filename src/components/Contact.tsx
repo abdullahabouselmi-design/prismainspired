@@ -9,12 +9,12 @@ export function Contact() {
     <section className="relative bg-ink">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.15]" />
 
-      <Grid width="sm" className="relative gap-y-8">
+      <Grid width="lg" className="relative gap-y-6">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow>Contact</Eyebrow>
         </div>
 
-        <h2 className="col-span-4 max-w-[12ch] text-4xl font-normal text-bone sm:text-5xl md:col-span-8 md:text-6xl lg:col-span-9 lg:text-7xl">
+        <h2 className="col-span-4 text-4xl font-normal text-bone sm:text-5xl md:col-span-8 md:text-6xl lg:col-span-12 lg:text-7xl">
           <WordsPullUpMultiStyle
             align="left"
             segments={[
@@ -38,7 +38,7 @@ export function Contact() {
           <span className="text-xs text-bone/40">Usually replies within a day</span>
         </div>
 
-        <footer className="col-span-4 mt-24 flex flex-col gap-8 border-t border-bone/10 pt-10 md:col-span-8 sm:flex-row sm:items-start sm:justify-between lg:col-span-12">
+        <footer className="col-span-4 mt-16 flex flex-col gap-8 border-t border-bone/10 pt-8 md:col-span-8 sm:flex-row sm:items-start sm:justify-between lg:col-span-12">
           <div>
             <p className="text-sm font-bold tracking-wide text-bone">ABDULLAH ABOU SELMI</p>
             <p className="mt-1 text-xs text-bone/40">Product &amp; Brand Strategist</p>

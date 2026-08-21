@@ -5,10 +5,13 @@ and the next task.
 
 ## Non-negotiables
 
-1. **`https://prismainspired.vercel.app` is the frozen visual foundation.**
-   Its fonts, type sizes, spacing and look are approved and must not change.
-   All new work sits *on top of* it. When in doubt, measure the live site —
-   it is the source of truth, not this repo.
+1. **The repo is now the source of truth, not the deployed site.**
+   Typography — Almarai + Instrument Serif, the six scale classes, the four
+   headline sizes — remains approved and frozen. **Layout no longer is.** The
+   owner has since directed: one container width (1280) for every section,
+   headlines on one line, and vertical space cut wherever it is not earning
+   its place. Do not "restore" spacing or per-section container widths to
+   match an older deployment; that divergence is deliberate.
 
 2. **`Hero.tsx` is frozen.** No visual, animation, timing, layout, typography
    or behavioural changes. Also frozen: `Preloader.tsx` (including its 2.2s

@@ -1,5 +1,4 @@
 import { WordsPullUpMultiStyle } from './WordsPullUpMultiStyle'
-import { Reveal } from './Reveal'
 import { Grid } from './Grid'
 import { Eyebrow } from './Eyebrow'
 
@@ -11,15 +10,7 @@ type Logo = {
   /** Optical correction. Aspect ratios run 1:1 to 6:1, so equal height is not
    *  equal visual weight: wide wordmarks need trimming, square marks need lifting. */
   scale?: number
-  /** Marks that carry their own internal light and dark cannot be silhouetted. */
-  filter?: string
 }
-
-/** Desaturate and pull every mark to a common weight — but never to a
- *  silhouette. brightness(0) collapses alpha into solid black, which erases
- *  any logo built as light type on a filled shape (Septona) and thickens
- *  anti-aliased wordmarks into mud (Cosmopolitan). */
-const FLATTEN = 'grayscale(1) brightness(0.5) contrast(1.3)'
 
 const TIER_ONE_LOGOS: Logo[] = [
   { name: 'Cosmopolitan Cosmetics', src: '/logos/brands/cosmopolitan-cosmetics.webp', w: 733, h: 120, scale: 0.76 },
@@ -39,6 +30,43 @@ const TIER_TWO_LOGOS: Logo[] = [
 
 /** Container height is 20 / 24 / 28px at sm / md / lg, times each logo's scale. */
 
+/**
+ * One pass of a tier's logos. The -50% keyframe needs exactly two identical
+ * halves, and five marks do not fill 1232px, so each half repeats the set.
+ */
+function LogoRun({ logos, ariaHidden }: { logos: Logo[]; ariaHidden?: boolean }) {
+  // Two passes per half is enough once the pitch is wide; three put the same
+  // mark on screen twice, which reads as a mistake rather than a loop.
+  const run = [...logos, ...logos]
+  return (
+    <span aria-hidden={ariaHidden ? 'true' : undefined} className="flex shrink-0 items-center">
+      {run.map((logo, i) => (
+        <span
+          key={`${logo.src}-${i}`}
+          className="flex shrink-0 items-center justify-center px-9 md:px-14 lg:px-20"
+        >
+          <span
+            // Height stays responsive via classes; the per-logo optical
+            // correction rides in as a CSS variable.
+            className="flex items-center justify-center h-[calc(20px*var(--k))] md:h-[calc(24px*var(--k))] lg:h-[calc(28px*var(--k))]"
+            style={{ ['--k' as string]: logo.scale ?? 1 }}
+          >
+            <img
+              src={logo.src}
+              alt={ariaHidden ? '' : logo.name}
+              width={logo.w}
+              height={logo.h}
+              // h-full, not max-h-full: max-height leaves the box with no definite
+              // dimension, so it lays out 0x0 and never decodes.
+              className="h-full w-auto object-contain"
+            />
+          </span>
+        </span>
+      ))}
+    </span>
+  )
+}
+
 const TIERS = [
   {
     tier: 'Tier 1',
@@ -46,6 +74,7 @@ const TIERS = [
     description:
       'Six years inside FMCG — relaunches, distribution partnerships, and market entry.',
     logos: TIER_ONE_LOGOS,
+    duration: '46s',
   },
   {
     tier: 'Tier 2',
@@ -53,27 +82,28 @@ const TIERS = [
     description:
       'Two years in strategy consulting — research, benchmarking, and strategic frameworks across public and private sector.',
     logos: TIER_TWO_LOGOS,
+    duration: '58s',
   },
 ]
 
 export function Work() {
   return (
-    <section id="work" className="relative bg-paper py-24 md:py-32">
+    <section id="work" className="relative bg-paper py-16 md:py-20">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
 
-      <Grid width="md" className="relative gap-y-8">
+      <Grid width="lg" className="relative gap-y-6">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow tone="light">Where the work has been applied</Eyebrow>
         </div>
 
-        <h2 className="display-1 col-span-4 max-w-[18ch] text-ink md:col-span-8 lg:col-span-9">
+        <h2 className="display-1 col-span-4 text-ink md:col-span-8 lg:col-span-12">
           <WordsPullUpMultiStyle
             align="left"
             segments={[{ text: 'Seven years, two very different rooms.' }]}
           />
         </h2>
 
-        <div className="col-span-4 mt-10 space-y-16 md:col-span-8 lg:col-span-12">
+        <div className="col-span-4 mt-6 space-y-10 md:col-span-8 lg:col-span-12">
           {TIERS.map((tier) => (
             <div key={tier.tier}>
               <div className="flex items-baseline gap-4">
@@ -82,44 +112,17 @@ export function Work() {
                 <span aria-hidden="true" className="h-px w-full bg-ink/15" />
               </div>
 
-              <p className="mt-4 max-w-[64ch] text-sm text-ink/60">{tier.description}</p>
+              <p className="mt-3 max-w-[64ch] text-sm text-ink/60">{tier.description}</p>
 
-              <ul className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-3 lg:grid-cols-4">
-                {tier.logos.map((logo, i) => {
-                  const k = logo.scale ?? 1
-                  return (
-                    // <li> wraps <Reveal>, not the other way round: Reveal renders a
-                    // <div>, and a <div> is not valid inside a <ul>.
-                    <li
-                      key={`${tier.tier}-${logo.src}`}
-                      className="group flex items-center justify-center"
-                    >
-                      <Reveal index={i % 4}>
-                        <span
-                          // Height stays responsive via classes; the per-logo
-                          // optical correction rides in as a CSS variable.
-                          className="flex items-center justify-center h-[calc(20px*var(--k))] md:h-[calc(24px*var(--k))] lg:h-[calc(28px*var(--k))]"
-                          style={{ ['--k' as string]: k }}
-                        >
-                          <img
-                            src={logo.src}
-                            alt={logo.name}
-                            width={logo.w}
-                            height={logo.h}
-                            loading="lazy"
-                            // h-full, not max-h-full: max-height leaves the box with no definite
-                            // dimension, so it lays out 0x0, never intersects the viewport,
-                            // and loading="lazy" therefore never fires. Width comes from the
-                            // width/height attributes' aspect ratio.
-                            className="h-full w-auto object-contain opacity-50 transition-opacity duration-300 group-hover:opacity-100"
-                            style={{ filter: logo.filter ?? FLATTEN }}
-                          />
-                        </span>
-                      </Reveal>
-                    </li>
-                  )
-                })}
-              </ul>
+              <div
+                className="marquee-host marquee-fade relative mt-6 overflow-hidden"
+                style={{ ['--marquee-duration' as string]: tier.duration }}
+              >
+                <div className="marquee-track flex w-max">
+                  <LogoRun logos={tier.logos} />
+                  <LogoRun logos={tier.logos} ariaHidden />
+                </div>
+              </div>
             </div>
           ))}
         </div>

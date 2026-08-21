@@ -106,22 +106,22 @@ function ProcessStep({ step, index }: { step: Step; index: number }) {
 
 export function Process() {
   return (
-    <section id="process" className="relative bg-paper py-24 md:py-32">
+    <section id="process" className="relative bg-paper py-16 md:py-20">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
 
-      <Grid width="lg" className="relative gap-y-8">
+      <Grid width="lg" className="relative gap-y-6">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow tone="light">How I work</Eyebrow>
         </div>
 
-        <h2 className="display-1 col-span-4 max-w-[18ch] text-ink md:col-span-8 lg:col-span-9">
+        <h2 className="display-1 col-span-4 text-ink md:col-span-8 lg:col-span-12">
           <WordsPullUpMultiStyle
             align="left"
             segments={[{ text: 'From ambiguous brief to undeniable vision.' }]}
           />
         </h2>
 
-        <ol className="col-span-4 mt-8 grid grid-cols-1 gap-10 md:col-span-8 md:grid-cols-2 md:gap-x-8 lg:col-span-12 lg:grid-cols-4 lg:gap-x-0">
+        <ol className="col-span-4 mt-6 grid grid-cols-1 gap-8 md:col-span-8 md:grid-cols-2 md:gap-x-8 lg:col-span-12 lg:grid-cols-4 lg:gap-x-0">
           {STEPS.map((step, i) => (
             <ProcessStep key={step.number} step={step} index={i} />
           ))}

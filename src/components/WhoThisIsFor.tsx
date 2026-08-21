@@ -27,15 +27,15 @@ export function WhoThisIsFor() {
   const reduceMotion = useReducedMotion()
 
   return (
-    <section className="relative bg-paper py-20 md:py-24">
+    <section className="relative bg-paper py-16 md:py-20">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
 
-      <Grid width="sm" className="relative gap-y-6">
+      <Grid width="lg" className="relative gap-y-5">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow tone="light">Who I work with</Eyebrow>
         </div>
 
-        <h2 className="col-span-4 max-w-[14ch] text-2xl font-normal text-ink sm:text-3xl md:col-span-8 md:text-4xl lg:col-span-8">
+        <h2 className="col-span-4 text-2xl font-normal text-ink sm:text-3xl md:col-span-8 md:text-4xl lg:col-span-12">
           <WordsPullUpMultiStyle
             align="left"
             segments={[{ text: 'People with something to launch.' }]}
@@ -53,7 +53,7 @@ export function WhoThisIsFor() {
       </Grid>
 
       {reduceMotion ? (
-        <Grid width="sm" className="relative mt-10">
+        <Grid width="lg" className="relative mt-6">
           <div className="col-span-4 flex flex-wrap items-center gap-x-8 gap-y-3 md:col-span-8 lg:col-span-12">
             {AUDIENCES.map((item) => (
               <span key={item} className="text-lg font-bold text-ink sm:text-2xl">
@@ -63,12 +63,14 @@ export function WhoThisIsFor() {
           </div>
         </Grid>
       ) : (
-        <div className="marquee-host relative mt-10 overflow-hidden">
-          <div className="marquee-track flex w-max">
-            <Strip />
-            <Strip ariaHidden />
+        <Grid width="lg" className="relative mt-6">
+          <div className="marquee-host marquee-fade relative col-span-4 overflow-hidden md:col-span-8 lg:col-span-12">
+            <div className="marquee-track flex w-max">
+              <Strip />
+              <Strip ariaHidden />
+            </div>
           </div>
-        </div>
+        </Grid>
       )}
     </section>
   )

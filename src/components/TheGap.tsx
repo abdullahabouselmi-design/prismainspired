@@ -14,10 +14,10 @@ const P3 =
 
 export function TheGap() {
   return (
-    <section className="relative bg-paper py-24 md:py-32">
+    <section className="relative bg-paper py-16 md:py-20">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
 
-      <Grid width="sm" className="relative gap-y-10">
+      <Grid width="lg" className="relative gap-y-8">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow tone="light">The gap</Eyebrow>
         </div>
@@ -40,7 +40,7 @@ export function TheGap() {
             {P2}
           </MaskReveal>
 
-          <div className="mt-12 border-t border-ink/15 pt-12">
+          <div className="mt-8 border-t border-ink/15 pt-8">
             <MaskReveal as="p" order={2} className="body-lg max-w-[52ch] text-ink">
               {P3}
             </MaskReveal>

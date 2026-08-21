@@ -26,15 +26,15 @@ export function Calibration() {
   const reduced = typeof window !== 'undefined' && prefersReducedMotion()
 
   return (
-    <section className="relative bg-ink py-28 md:py-40">
+    <section className="relative bg-ink py-16 md:py-20">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.15]" />
 
-      <Grid width="lg" className="relative gap-y-8">
+      <Grid width="lg" className="relative gap-y-6">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Eyebrow>How I think</Eyebrow>
         </div>
 
-        <h2 className="display-1 col-span-4 max-w-[12ch] text-bone md:col-span-8 lg:col-span-9">
+        <h2 className="display-1 col-span-4 text-bone md:col-span-8 lg:col-span-12">
           <WordsPullUpMultiStyle
             align="left"
             segments={[{ text: 'I think in building blocks.' }]}
@@ -54,7 +54,7 @@ export function Calibration() {
           hands the sticky element the tall wrapper it needs to travel in; at lg
           the wrapper becomes the left grid column, which stretches to the row's
           full height and does the same job. */}
-      <Grid width="lg" className="relative mt-14">
+      <Grid width="lg" className="relative mt-8">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <div className="lg:grid lg:grid-cols-12 lg:gap-16">
             <div className="contents lg:block lg:col-span-5">
@@ -62,13 +62,13 @@ export function Calibration() {
                   needs its own ground for the rows to pass behind — and it
                   pins to the very top, or rows would reappear above it. At lg
                   it sits in its own column and needs neither. */}
-              <div className="sticky top-0 z-10 mb-10 flex h-[38vh] items-center justify-center bg-ink md:h-[40vh] lg:top-[14vh] lg:mb-0 lg:h-[52vh] lg:bg-transparent">
+              <div className="sticky top-0 z-10 mb-10 flex h-[38vh] items-center justify-center bg-ink md:h-[40vh] lg:top-[12vh] lg:mb-0 lg:h-[44vh] lg:bg-transparent">
                 <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.15] lg:hidden" />
                 <CalibrationCan triggerRef={rowsRef} onBeat={onBeat} />
               </div>
             </div>
 
-            <div className="pb-[18vh] lg:col-span-7">
+            <div className="pb-[6vh] lg:col-span-7">
               <div className="flex items-baseline justify-between border-b border-bone/15 pb-3">
                 <span className="text-xs uppercase tracking-widest text-bone">The calibration</span>
                 <span className="text-xs text-bone/40">Set to a proportion</span>
@@ -82,7 +82,7 @@ export function Calibration() {
                     return (
                       <li
                         key={block.label}
-                        className={`transition-opacity duration-500 ${isResult ? 'py-14' : 'border-b border-bone/10 py-14'}`}
+                        className={`transition-opacity duration-500 ${isResult ? 'py-6' : 'border-b border-bone/10 py-6'}`}
                         style={{ opacity: isActive ? 1 : 0.25 }}
                       >
                         <p className={`label ${isResult ? 'text-bone' : 'text-amber'}`}>

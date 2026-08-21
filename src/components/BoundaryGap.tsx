@@ -16,7 +16,7 @@ export function BoundaryGap({ from, to }: BoundaryGapProps) {
       data-boundary=""
       data-from={from}
       data-to={to}
-      className="h-[12vh] w-full"
+      className="h-[6vh] w-full"
     />
   )
 }

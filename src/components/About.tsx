@@ -18,10 +18,10 @@ const ROTATING = ['launch it.', 'build it.', 'fund it.']
 
 export function About() {
   return (
-    <section id="about" className="relative overflow-hidden bg-paper py-24 md:py-32">
+    <section id="about" className="relative overflow-hidden bg-paper py-16 md:py-20">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
 
-      <Grid width="full" className="relative items-center gap-y-12">
+      <Grid width="full" className="relative items-center gap-y-8">
         {/* Full-bleed portrait: deliberately escapes the grid to the left edge. */}
         <div className="col-span-4 md:col-span-8 lg:col-span-5">
           <ImageReveal className="-ml-6">
@@ -51,7 +51,7 @@ export function About() {
         <div className="col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7">
           <Eyebrow tone="light">Product &amp; Brand Strategist</Eyebrow>
 
-          <h2 className="display-1 mt-4 max-w-[14ch] text-ink lg:text-6xl">
+          <h2 className="display-1 mt-4 text-ink lg:text-6xl">
             <WordsPullUpMultiStyle
               align="left"
               segments={[{ text: 'See it before you' }]}
