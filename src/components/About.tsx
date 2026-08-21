@@ -18,7 +18,7 @@ const ROTATING = ['launch it.', 'build it.', 'fund it.']
 
 export function About() {
   return (
-    <section id="about" className="relative overflow-hidden bg-paper py-16 md:py-20">
+    <section id="about" className="relative z-10 -mt-8 rounded-t-[1.75rem] md:-mt-12 md:rounded-t-[2.5rem] overflow-hidden bg-paper py-16 md:py-20">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
 
       <Grid width="full" className="relative items-center gap-y-8">

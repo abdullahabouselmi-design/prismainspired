@@ -185,6 +185,40 @@ ring of dots and reads as a blob. Equal card heights need `h-full` on *both* the
 `Reveal` and the `<article>`, because `Reveal` interposes a div; the closing rule
 uses `mt-auto` so the rules line up across a row.
 
+## Section joins — no bands, no crossfade
+
+`BoundaryGap.tsx` and `PageBackground.tsx` are **deleted**. They are not coming
+back: the mechanism was an empty 6vh band with the page background interpolating
+ink to paper behind it, and mid-scroll that band rendered as a muddy in-between
+colour — a visible third stripe at every join, which is exactly what it was
+meant to avoid.
+
+Sections now **lap over each other**. Every section from About down carries
+`relative z-10 -mt-8 rounded-t-[1.75rem] md:-mt-12 md:rounded-t-[2.5rem]`, so
+each one rises over the one above with a rounded top. The corner cut-out reveals
+the *previous section*, never the page background, so no intermediate colour can
+ever appear. Equal `z-10` plus DOM order does the stacking; no per-section
+z-index ladder is needed.
+
+Two consequences worth knowing:
+
+- `html { background-color: #0b0907 }` in `index.css` is now the only page
+  background, and it is only visible above the Hero.
+- Removing the eight bands took roughly 780px off the document (8,001 → 7,221 at
+  1440).
+
+## The badge
+
+`SpinningText.tsx` is a ring of type on an SVG `textPath`, with `textLength`
+pinned to the circumference and `lengthAdjust="spacing"` so the phrase closes
+its own loop cleanly. It lives in **Who I work with**, hard right, with the four
+`ProcessIcons` cycling at its centre in amber on a 2.6s interval.
+
+**The spin must stay on a group inside the SVG, never on the `<svg>` element.**
+Rotating the element grows its bounding box by up to 41%, which pushed past the
+container and caused horizontal overflow at 1024 and 768 where there is no spare
+margin to absorb it.
+
 ## The Gap
 
 `GapDivergence.tsx` is **deleted**. The scroll-driven SVG that scattered six

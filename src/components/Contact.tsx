@@ -3,7 +3,6 @@ import { MaskReveal } from './MaskReveal'
 import { BookACall } from './BookACall'
 import { Grid } from './Grid'
 import { Eyebrow } from './Eyebrow'
-import { SpinningText } from './SpinningText'
 
 const LINKEDIN_URL = 'https://www.linkedin.com/in/aaselmi/'
 
@@ -18,7 +17,7 @@ function LinkedInMark({ className }: { className?: string }) {
 
 export function Contact() {
   return (
-    <section className="relative bg-ink">
+    <section className="relative z-10 -mt-8 rounded-t-[1.75rem] md:-mt-12 md:rounded-t-[2.5rem] bg-ink pt-12 md:pt-16">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.15]" />
 
       <Grid width="lg" className="relative gap-y-6">
@@ -50,7 +49,7 @@ export function Contact() {
           <span className="text-xs text-bone/40">Usually replies within a day</span>
         </div>
 
-        <footer className="col-span-4 mt-16 flex flex-col gap-10 border-t border-bone/10 pt-8 md:col-span-8 sm:flex-row sm:items-center sm:justify-between sm:gap-8 lg:col-span-12">
+        <footer className="col-span-4 mt-16 flex flex-col gap-10 border-t border-bone/10 pt-8 md:col-span-8 sm:flex-row sm:items-end sm:justify-between sm:gap-8 lg:col-span-12">
           <div>
             <p className="text-sm font-bold tracking-wide text-bone">ABDULLAH ABOU SELMI</p>
             <p className="mt-1 text-xs text-bone/40">Product &amp; Brand Strategist</p>
@@ -74,9 +73,6 @@ export function Contact() {
             </a>
           </div>
 
-          <div className="h-28 w-28 shrink-0 text-bone/40 sm:h-32 sm:w-32">
-            <SpinningText text="Strategy Made Seen" />
-          </div>
         </footer>
       </Grid>
     </section>

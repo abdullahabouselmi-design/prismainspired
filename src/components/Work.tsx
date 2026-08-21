@@ -88,7 +88,7 @@ const TIERS = [
 
 export function Work() {
   return (
-    <section id="work" className="relative bg-paper py-16 md:py-20">
+    <section id="work" className="relative z-10 -mt-8 rounded-t-[1.75rem] md:-mt-12 md:rounded-t-[2.5rem] bg-paper py-16 md:py-20">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.08]" />
 
       <Grid width="lg" className="relative gap-y-6">

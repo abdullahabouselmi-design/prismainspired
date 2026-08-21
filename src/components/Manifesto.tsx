@@ -19,7 +19,7 @@ const STATS = [
 
 export function Manifesto() {
   return (
-    <section id="thinking" className="relative bg-ink py-16 md:py-20">
+    <section id="thinking" className="relative z-10 -mt-8 rounded-t-[1.75rem] md:-mt-12 md:rounded-t-[2.5rem] bg-ink py-16 md:py-20">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.15]" />
 
       <Grid width="lg" className="relative gap-y-8">

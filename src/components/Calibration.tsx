@@ -26,7 +26,7 @@ export function Calibration() {
   const reduced = typeof window !== 'undefined' && prefersReducedMotion()
 
   return (
-    <section className="relative bg-ink py-16 md:py-20">
+    <section className="relative z-10 -mt-8 rounded-t-[1.75rem] md:-mt-12 md:rounded-t-[2.5rem] bg-ink py-16 md:py-20">
       <div className="bg-noise pointer-events-none absolute inset-0 opacity-[0.15]" />
 
       <Grid width="lg" className="relative gap-y-6">
@@ -91,11 +91,12 @@ export function Calibration() {
                         <p
                           className={
                             isResult
-                              ? 'body-lg mt-3 max-w-[46ch] font-medium text-bone'
+                              // Hero's voice: Almarai 800, uppercase, tight.
+                              ? 'mt-3 max-w-[46ch] text-lg font-extrabold uppercase tracking-[-0.02em] text-bone sm:text-2xl'
                               : 'body-base mt-3 max-w-[46ch] text-bone'
                           }
                         >
-                          {block.description}
+                          {isResult ? block.description.toUpperCase() : block.description}
                         </p>
                       </li>
                     )
