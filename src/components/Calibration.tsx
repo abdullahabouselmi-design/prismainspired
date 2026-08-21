@@ -92,7 +92,7 @@ export function Calibration() {
                           className={
                             isResult
                               // Hero's voice: Almarai 800, uppercase, tight.
-                              ? 'mt-3 max-w-[46ch] text-lg font-extrabold uppercase tracking-[-0.02em] text-bone sm:text-2xl'
+                              ? 'mt-3 max-w-[46ch] text-lg font-extrabold uppercase tracking-[-0.02em] text-amber sm:text-2xl'
                               : 'body-base mt-3 max-w-[46ch] text-bone'
                           }
                         >
