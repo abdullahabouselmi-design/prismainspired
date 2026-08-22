@@ -19,14 +19,14 @@ const STEPS: Step[] = [
     number: '001',
     label: 'Look',
     title: 'Map the terrain.',
-    body: "Market and sector analysis, competitive benchmarking, best-practice review, and the consumer and cultural work underneath it. Whether it's a shelf or a public program, the point is to find the blind spots, the risks nobody's priced in, and the openings that don't show from the surface.",
+    body: "Market and sector analysis, competitive benchmarking, best-practice review, and the consumer and cultural work underneath it. Whether it's a new launch or a relaunch, the point is to find the blind spots, the risks nobody's priced in, and the openings that don't show from the surface.",
     Icon: IconLook,
   },
   {
     number: '002',
     label: 'Shape',
     title: 'Formulate the strategy.',
-    body: "The research turns into something with a spine: positioning, the business case, the product or program logic, the route to market. It's the blueprint that gives the idea structure and a path forward.",
+    body: "The research turns into something with a spine: positioning, the business case, the product logic, the route to market. It's the blueprint that gives the idea structure and a path forward.",
     Icon: IconShape,
   },
   {
@@ -40,7 +40,7 @@ const STEPS: Step[] = [
     number: '004',
     label: 'Show',
     title: 'Make it undeniable.',
-    body: "Most strategy stops at the recommendation. I go to the moment that decides whether it works: the product in someone's hand, the campaign in the wild, the program running. I make that moment concrete enough to react to, so it can be judged rather than admired. If it's wrong, you find that out on a page instead of months in.",
+    body: "Most strategy stops at the recommendation. I go to the moment that decides whether it works: the product in someone's hand, the campaign in the wild, the pack on the shelf. I make that moment concrete enough to react to, so it can be judged rather than admired. If it's wrong, you find that out on a page instead of months in.",
     Icon: IconShow,
   },
 ]
