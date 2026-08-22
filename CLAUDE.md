@@ -56,6 +56,17 @@ chunk, so don't, without a reason that earns it.
 
 ## Deploying
 
+The repo lives at `github.com/abdullahabouselmi-design/prismainspired` (private)
+and is connected to the Vercel project, so **pushing to `main` deploys to
+production automatically**. Any other branch gets its own preview URL.
+
+```bash
+git push origin main             # ships to the public alias
+```
+
+Manual deploys still work and remain the override when you need to ship
+something that is not a commit on `main`:
+
 ```bash
 npm run build
 npx vercel deploy --prod --yes    # public alias

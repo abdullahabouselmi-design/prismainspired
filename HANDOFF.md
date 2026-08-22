@@ -4,8 +4,10 @@ Written so a fresh session can resume without prior conversation.
 Read `CLAUDE.md` first for the non-negotiables.
 
 Repo: `/Users/abdullahabouselmi/Downloads/PrismaInspired`
+GitHub: `https://github.com/abdullahabouselmi-design/prismainspired` (private)
 Production: `https://prismainspired.vercel.app` (Vercel project `prismainspired`,
-team `abdullah-as-elmi`)
+team `abdullah-as-elmi`) — connected to the GitHub repo, so a push to `main`
+deploys to production on its own.
 
 ---
 
@@ -66,6 +68,13 @@ chunk, so don't without a reason that earns it.
    remaining delta once and wait ~700ms rather than nudging.
 7. **`vercel deploy --prod` has not always moved the alias.** Always confirm the
    live bundle hash matches `dist/index.html`, and `vercel promote <url>` if not.
+   This applies to *manual* CLI deploys. Builds triggered by a push to `main`
+   are promoted by Vercel itself and have not shown this problem.
+8. **Vercel's GitHub App grants access per repository.** It was installed but
+   scoped to one unrelated repo, so `vercel git connect` failed with a
+   misleading "make sure there aren't any typos" error. The fix is *Adjust
+   GitHub App Permissions* on the project's Settings -> Git page, not
+   re-authenticating.
 
 ## Open items
 
@@ -98,11 +107,20 @@ and check with Playwright at 1440 / 1024 / 768 / 375:
 
 ## Deploying
 
+Pushing to `main` builds and deploys to production automatically. Any other
+branch gets its own preview URL, so branch when you do not mean to ship.
+
+```bash
+git push origin main
+```
+
+The manual CLI route remains available as an override:
+
 ```bash
 npm run build && npx vercel deploy --prod --yes
 ```
 
-Then confirm the alias moved:
+After a *manual* deploy, confirm the alias moved:
 
 ```bash
 curl -s https://prismainspired.vercel.app/ | grep -o 'assets/index-[A-Za-z0-9_-]*\.js'
