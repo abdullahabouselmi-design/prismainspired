@@ -88,7 +88,11 @@ function ProcessStep({ step, index }: { step: Step; index: number }) {
   const divider = index > 0 ? 'lg:border-l lg:border-slate/25 lg:pl-8' : ''
 
   return (
-    <li ref={ref} className={divider} {...revealAttr()}>
+    <li
+      ref={ref}
+      className={`lg:grid lg:grid-rows-subgrid lg:row-span-4 ${divider}`}
+      {...revealAttr()}
+    >
       <div className="flex items-baseline gap-3">
         <span className="text-xs font-bold tracking-widest text-amberDeep">{step.number}</span>
         <span className="text-xs uppercase tracking-widest text-ink/50">{step.label}</span>
@@ -98,7 +102,7 @@ function ProcessStep({ step, index }: { step: Step; index: number }) {
         <step.Icon className="h-12 w-12 text-ink" accentClassName="text-amberDeep" />
       </span>
 
-      <h3 className="mt-6 text-lg font-bold text-ink sm:text-xl">{step.title}</h3>
+      <h3 className="step-title mt-6 text-lg font-bold text-ink sm:text-xl">{step.title}</h3>
       <p className="mt-4 text-sm leading-relaxed text-ink/60">{step.body}</p>
     </li>
   )
@@ -121,7 +125,7 @@ export function Process() {
           />
         </h2>
 
-        <ol className="col-span-4 mt-6 grid grid-cols-1 gap-8 md:col-span-8 md:grid-cols-2 md:gap-x-8 lg:col-span-12 lg:grid-cols-4 lg:gap-x-0">
+        <ol className="col-span-4 mt-6 grid grid-cols-1 gap-8 md:col-span-8 md:grid-cols-2 md:gap-x-8 lg:col-span-12 lg:grid-cols-4 lg:grid-rows-[auto_auto_auto_auto] lg:gap-x-0 lg:gap-y-0">
           {STEPS.map((step, i) => (
             <ProcessStep key={step.number} step={step} index={i} />
           ))}
