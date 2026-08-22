@@ -14,8 +14,8 @@ deploys to production on its own.
 ## Where things stand
 
 **The repo and production are in sync and everything is shipped.** Working tree
-clean at `80cb0ae`. The live alias serves the same bundle hash the local `dist/`
-builds. There is no outstanding work in flight.
+clean at `1904b85`, pushed to `origin/main`. The live alias serves the build
+Vercel produced from that commit. There is no outstanding work in flight.
 
 The site is a single scrolling document, ten sections, no router:
 
