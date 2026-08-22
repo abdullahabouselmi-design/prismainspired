@@ -73,5 +73,7 @@ npx vercel deploy --prod --yes    # public alias
 npx vercel deploy --yes           # preview (SSO-gated, owner-only)
 ```
 
-Only the production alias is publicly viewable; preview URLs sit behind Vercel
-deployment protection. Roll back with `npx vercel rollback <deployment-url>`.
+Production is `https://abdullahabouselmi.com` (registered at Vercel, Vercel
+nameservers, so no external DNS to edit). The `prismainspired.vercel.app` alias
+still resolves. Only production is publicly viewable; preview URLs sit behind
+Vercel deployment protection. Roll back with `npx vercel rollback <url>`.

@@ -5,9 +5,11 @@ Read `CLAUDE.md` first for the non-negotiables.
 
 Repo: `/Users/abdullahabouselmi/Downloads/PrismaInspired`
 GitHub: `https://github.com/abdullahabouselmi-design/prismainspired` (private)
-Production: `https://prismainspired.vercel.app` (Vercel project `prismainspired`,
-team `abdullah-as-elmi`) — connected to the GitHub repo, so a push to `main`
-deploys to production on its own.
+Production: `https://abdullahabouselmi.com` (also `www.`, and the original
+`https://prismainspired.vercel.app` alias still resolves). Vercel project
+`prismainspired`, team `abdullah-as-elmi` — connected to the GitHub repo, so a
+push to `main` deploys to production on its own. The domain is registered *at*
+Vercel and uses Vercel nameservers, so there is no third-party DNS to edit.
 
 ---
 
